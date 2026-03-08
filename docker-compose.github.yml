@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  front:
+    image: ${DOCKER_IMAGE}:${TAG:-production}
+    container_name: bizzexpo-front
+    restart: unless-stopped
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.bizzexpo-front.rule=Host(`${FRONT_HOST}`)"
+      - "traefik.http.routers.bizzexpo-front.entrypoints=websecure"
+      - "traefik.http.routers.bizzexpo-front.tls.certresolver=letsencrypt"
+      - "traefik.http.services.bizzexpo-front.loadbalancer.server.port=80"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  traefik:
+    external: true
