@@ -2,13 +2,13 @@
 interface Props {
   size?: 'sm' | 'md' | 'lg' | 'xl'
   showText?: boolean
-  variant?: 'light' | 'dark'
+  variant?: 'light' | 'dark' | 'auto'
 }
 
 const props = withDefaults(defineProps<Props>(), {
   size: 'md',
   showText: true,
-  variant: 'dark',
+  variant: 'auto',
 })
 
 const sizeClasses = {
@@ -21,6 +21,7 @@ const sizeClasses = {
 const textColor = {
   light: 'text-white',
   dark: 'text-gray-900',
+  auto: 'text-gray-900 dark:text-white',
 }
 </script>
 
