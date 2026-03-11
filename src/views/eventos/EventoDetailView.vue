@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AppLayout from '@/components/layout/AppLayout.vue'
 import Card from '@/components/ui/Card.vue'
@@ -14,6 +14,21 @@ const eventosStore = useEventosStore()
 
 const confirmDelete = ref(false)
 const statusLoading = ref(false)
+const linkCopiado = ref(false)
+
+const linkEvento = computed(() => {
+  if (!eventosStore.eventoAtual?.slug) return ''
+  return `${window.location.origin}/evento/${eventosStore.eventoAtual.slug}`
+})
+
+async function copiarLink() {
+  if (!linkEvento.value) return
+  await navigator.clipboard.writeText(linkEvento.value)
+  linkCopiado.value = true
+  setTimeout(() => {
+    linkCopiado.value = false
+  }, 2000)
+}
 
 onMounted(() => {
   eventosStore.fetchEvento(route.params.id as string)
@@ -133,6 +148,36 @@ function getNextStatusLabel(status: string): string {
           <h3 class="text-sm font-medium text-gray-500">Descricao</h3>
           <p class="mt-1 text-gray-900 whitespace-pre-wrap">
             {{ eventosStore.eventoAtual.descricao }}
+          </p>
+        </div>
+
+        <!-- Link para divulgacao -->
+        <div class="mb-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
+          <h3 class="text-sm font-medium text-blue-800 mb-2">Link para divulgacao</h3>
+          <div class="flex items-center gap-2">
+            <input
+              type="text"
+              readonly
+              :value="linkEvento"
+              class="flex-1 px-3 py-2 bg-white border border-blue-200 rounded-lg text-sm text-gray-700 select-all"
+              @focus="($event.target as HTMLInputElement).select()"
+            />
+            <Button
+              variant="secondary"
+              size="sm"
+              @click="copiarLink"
+            >
+              <svg v-if="!linkCopiado" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              <svg v-else class="h-4 w-4 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              {{ linkCopiado ? 'Copiado!' : 'Copiar' }}
+            </Button>
+          </div>
+          <p class="text-xs text-blue-600 mt-2">
+            Compartilhe este link para visitantes se inscreverem no evento.
           </p>
         </div>
 
