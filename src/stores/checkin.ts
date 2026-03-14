@@ -34,15 +34,20 @@ export const useCheckinStore = defineStore('checkin', () => {
   }
 
   // Realizar check-in
-  async function realizarCheckin(eventoId: string, inscricaoId: string) {
+  async function realizarCheckin(eventoId: string, qrcode: string) {
     loading.value = true
     error.value = null
     try {
       const response = await api.post(`/eventos/${eventoId}/checkin`, {
-        inscricao_id: inscricaoId,
+        qrcode,
       })
-      checkinResult.value = response.data.data
-      return response.data.data
+      const inscricao = response.data.data
+      checkinResult.value = {
+        inscricao,
+        checkin_at: inscricao.checkin_at,
+        ja_realizado: false,
+      }
+      return checkinResult.value
     } catch (err: any) {
       error.value = err.response?.data?.message || 'Erro ao realizar check-in'
       throw err

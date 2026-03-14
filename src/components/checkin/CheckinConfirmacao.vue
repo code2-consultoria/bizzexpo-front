@@ -1,16 +1,57 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import type { CheckinResult } from '@/stores/checkin'
 
 interface Props {
   result: CheckinResult
+  modoTotem?: boolean
+  autoResetSegundos?: number
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  modoTotem: false,
+  autoResetSegundos: 0,
+})
 
 const emit = defineEmits<{
   (e: 'novo-checkin'): void
 }>()
+
+const contador = ref(props.autoResetSegundos)
+let intervalId: ReturnType<typeof setInterval> | null = null
+
+const iniciarContador = () => {
+  if (props.autoResetSegundos > 0) {
+    contador.value = props.autoResetSegundos
+    intervalId = setInterval(() => {
+      contador.value--
+      if (contador.value <= 0) {
+        pararContador()
+        emit('novo-checkin')
+      }
+    }, 1000)
+  }
+}
+
+const pararContador = () => {
+  if (intervalId) {
+    clearInterval(intervalId)
+    intervalId = null
+  }
+}
+
+onMounted(() => {
+  iniciarContador()
+})
+
+onBeforeUnmount(() => {
+  pararContador()
+})
+
+watch(() => props.result, () => {
+  pararContador()
+  iniciarContador()
+})
 
 const dataCheckin = computed(() => {
   return new Intl.DateTimeFormat('pt-BR', {
@@ -74,13 +115,19 @@ const isJaRealizado = computed(() => props.result.ja_realizado === true)
           <h3 class="text-xl font-bold text-slate-900 truncate">
             {{ result.inscricao.participante.nome }}
           </h3>
-          <p class="text-slate-500 text-sm truncate">
+          <p v-if="modoTotem && result.inscricao.participante.cargo" class="text-slate-600 text-sm truncate">
+            {{ result.inscricao.participante.cargo }}
+          </p>
+          <p v-if="modoTotem" class="text-slate-500 text-sm truncate">
+            {{ result.inscricao.categoria.nome }}
+          </p>
+          <p v-if="!modoTotem" class="text-slate-500 text-sm truncate">
             {{ result.inscricao.participante.email }}
           </p>
         </div>
       </div>
 
-      <div class="flex flex-wrap gap-2">
+      <div v-if="!modoTotem" class="flex flex-wrap gap-2">
         <span class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
           {{ result.inscricao.categoria.nome }}
         </span>
@@ -90,6 +137,16 @@ const isJaRealizado = computed(() => props.result.ja_realizado === true)
         <p class="text-slate-500 text-sm">
           Check-in realizado em: <span class="font-medium text-slate-700">{{ dataCheckin }}</span>
         </p>
+      </div>
+    </div>
+
+    <!-- Contador de auto-reset (modo totem) -->
+    <div v-if="modoTotem && autoResetSegundos > 0" class="px-6 pb-4">
+      <div class="flex items-center justify-center gap-2 text-slate-500 text-sm">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Voltando em <span class="font-bold text-primary">{{ contador }}</span> segundos...</span>
       </div>
     </div>
 

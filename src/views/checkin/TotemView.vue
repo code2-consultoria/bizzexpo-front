@@ -11,7 +11,7 @@ const route = useRoute()
 const checkinStore = useCheckinStore()
 const eventoStore = useEventoPublicoStore()
 
-const slug = route.params.eventoId as string // No totem usamos o slug
+const slug = route.params.slug as string
 const scannerRef = ref<InstanceType<typeof QRScanner> | null>(null)
 const estado = ref<'scanner' | 'processando' | 'sucesso' | 'erro'>('scanner')
 const mensagemErro = ref('')
@@ -96,6 +96,8 @@ const handleNovoCheckin = () => {
         <div v-else-if="estado === 'sucesso' && checkinStore.checkinResult">
           <CheckinConfirmacao
             :result="checkinStore.checkinResult"
+            :modo-totem="true"
+            :auto-reset-segundos="10"
             @novo-checkin="handleNovoCheckin"
           />
         </div>

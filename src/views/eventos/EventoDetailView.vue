@@ -229,7 +229,7 @@ function getNextStatusLabel(status: string): string {
           </Button>
           <Button
             variant="ghost"
-            @click="router.push(`/eventos/${eventosStore.eventoAtual.id}/totem`)"
+            @click="router.push({ name: 'checkin-totem', params: { slug: eventosStore.eventoAtual.slug } })"
           >
             Totem
           </Button>

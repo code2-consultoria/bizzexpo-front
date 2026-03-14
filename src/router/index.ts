@@ -166,7 +166,7 @@ const router = createRouter({
     },
     // Check-in
     {
-      path: '/eventos/:eventoId/totem',
+      path: '/evento/:slug/totem',
       name: 'checkin-totem',
       component: () => import('@/views/checkin/TotemView.vue'),
       meta: { public: true, fullscreen: true },

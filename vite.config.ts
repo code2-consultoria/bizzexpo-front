@@ -49,5 +49,10 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 5173,
+    allowedHosts: ['bizzexpo.code2.dev'],
+    hmr: {
+      host: 'bizzexpo.code2.dev',
+      protocol: 'wss',
+    },
   },
 })

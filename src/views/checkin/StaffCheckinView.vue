@@ -63,7 +63,7 @@ const handleConfirmarCheckin = async () => {
   estado.value = 'validando'
 
   try {
-    await checkinStore.realizarCheckin(eventoId, inscricaoSelecionada.value.id)
+    await checkinStore.realizarCheckin(eventoId, inscricaoSelecionada.value.qrcode)
     estado.value = 'sucesso'
   } catch {
     estado.value = 'confirmacao'
@@ -113,7 +113,13 @@ const irParaWalkin = () => {
       <div class="mb-6 flex items-center justify-between">
         <div>
           <h1 class="text-2xl font-bold text-slate-900">Check-in</h1>
-          <p class="text-slate-500">{{ eventosStore.eventoAtual?.nome }}</p>
+          <RouterLink
+            :to="{ name: 'evento-detalhes', params: { id: eventoId } }"
+            class="text-slate-500 hover:text-primary hover:underline transition-colors flex items-center gap-1"
+          >
+            <span>&larr;</span>
+            {{ eventosStore.eventoAtual?.nome }}
+          </RouterLink>
         </div>
         <Button variant="secondary" @click="irParaWalkin">
           Walk-in
