@@ -1,43 +1,171 @@
 @import "tailwindcss";
 
-/* Variáveis de tema BizzExpo */
+/* Variáveis de tema Duevento */
 @theme {
-  /* Cores primárias - Azul BizzExpo */
-  --color-primary: #0047AB;
-  --color-primary-light: #0056d6;
-  --color-primary-dark: #003a8c;
-  --color-primary-50: oklch(0.97 0.01 250);
-  --color-primary-100: oklch(0.93 0.03 250);
-  --color-primary-200: oklch(0.86 0.06 250);
-  --color-primary-300: oklch(0.76 0.10 250);
-  --color-primary-400: oklch(0.64 0.15 250);
-  --color-primary-500: #0047AB;
-  --color-primary-600: #003a8c;
-  --color-primary-700: oklch(0.40 0.16 250);
-  --color-primary-800: oklch(0.34 0.12 250);
-  --color-primary-900: oklch(0.28 0.09 250);
-  --color-primary-950: oklch(0.20 0.06 250);
+  /* Mapeamento de cores padrão para o tema */
+  /* Slate → tons neutros baseados no tema */
+  --color-slate-50: #F7FBF9;
+  --color-slate-100: #EAF7F2;
+  --color-slate-200: #CFE8DD;
+  --color-slate-300: #9FD6BE;
+  --color-slate-400: #5F7D73;
+  --color-slate-500: #3D5A50;
+  --color-slate-600: #2A4038;
+  --color-slate-700: #1E3029;
+  --color-slate-800: #15231E;
+  --color-slate-900: #0A3D2E;
+  --color-slate-950: #05241B;
 
-  /* Cores de destaque */
-  --color-accent-yellow: #FFD700;
-  --color-accent-red: #EE2737;
+  /* Blue → Primary (verde) */
+  --color-blue-50: #F7FBF9;
+  --color-blue-100: #EAF7F2;
+  --color-blue-200: #CFE8DD;
+  --color-blue-300: #9FD6BE;
+  --color-blue-400: #63BE97;
+  --color-blue-500: #2FA66A;
+  --color-blue-600: #1F8A58;
+  --color-blue-700: #0F6B4F;
+  --color-blue-800: #0A5240;
+  --color-blue-900: #0A3D2E;
+  --color-blue-950: #05241B;
 
-  /* Cores secundárias */
-  --color-secondary-50: oklch(0.98 0.01 170);
-  --color-secondary-100: oklch(0.95 0.03 170);
-  --color-secondary-200: oklch(0.90 0.06 170);
-  --color-secondary-300: oklch(0.82 0.10 170);
-  --color-secondary-400: oklch(0.72 0.14 170);
-  --color-secondary-500: oklch(0.62 0.16 170);
-  --color-secondary-600: oklch(0.52 0.14 170);
-  --color-secondary-700: oklch(0.44 0.12 170);
-  --color-secondary-800: oklch(0.37 0.09 170);
-  --color-secondary-900: oklch(0.30 0.07 170);
-  --color-secondary-950: oklch(0.22 0.05 170);
+  /* Gray → tons neutros */
+  --color-gray-50: #F7FBF9;
+  --color-gray-100: #EAF7F2;
+  --color-gray-200: #CFE8DD;
+  --color-gray-300: #9FD6BE;
+  --color-gray-400: #5F7D73;
+  --color-gray-500: #3D5A50;
+  --color-gray-600: #2A4038;
+  --color-gray-700: #1E3029;
+  --color-gray-800: #15231E;
+  --color-gray-900: #123127;
+  --color-gray-950: #05241B;
 
-  /* Cores de fundo */
-  --color-background-light: #f5f7f8;
-  --color-background-dark: #0f1723;
+  /* Green → Sucesso (mantém semântica mas harmoniza com tema) */
+  --color-green-50: #ECFDF5;
+  --color-green-100: #D1FAE5;
+  --color-green-200: #A7F3D0;
+  --color-green-300: #6EE7B7;
+  --color-green-400: #34D399;
+  --color-green-500: #10B981;
+  --color-green-600: #059669;
+  --color-green-700: #047857;
+  --color-green-800: #065F46;
+  --color-green-900: #064E3B;
+  --color-green-950: #022C22;
+
+  /* Red → Erro/Perigo */
+  --color-red-50: #FEF2F2;
+  --color-red-100: #FEE2E2;
+  --color-red-200: #FECACA;
+  --color-red-300: #FCA5A5;
+  --color-red-400: #F87171;
+  --color-red-500: #EF4444;
+  --color-red-600: #DC2626;
+  --color-red-700: #B91C1C;
+  --color-red-800: #991B1B;
+  --color-red-900: #7F1D1D;
+  --color-red-950: #450A0A;
+
+  /* Yellow → Alerta (baseado no highlight do tema) */
+  --color-yellow-50: #FFF8E8;
+  --color-yellow-100: #FFEFBE;
+  --color-yellow-200: #FFE08A;
+  --color-yellow-300: #FFD056;
+  --color-yellow-400: #FFC229;
+  --color-yellow-500: #FFB200;
+  --color-yellow-600: #DB9600;
+  --color-yellow-700: #B67900;
+  --color-yellow-800: #915E00;
+  --color-yellow-900: #6B4500;
+  --color-yellow-950: #422A00;
+
+  /* Amber → Alerta (alias para yellow) */
+  --color-amber-50: #FFF8E8;
+  --color-amber-100: #FFEFBE;
+  --color-amber-200: #FFE08A;
+  --color-amber-300: #FFD056;
+  --color-amber-400: #FFC229;
+  --color-amber-500: #FFB200;
+  --color-amber-600: #DB9600;
+  --color-amber-700: #B67900;
+  --color-amber-800: #915E00;
+  --color-amber-900: #6B4500;
+  --color-amber-950: #422A00;
+
+  /* Cores primárias - Verde Duevento */
+  --color-primary: #0F6B4F;
+  --color-primary-light: #1F8A58;
+  --color-primary-dark: #0A5240;
+  --color-primary-50: #F7FBF9;
+  --color-primary-100: #EAF7F2;
+  --color-primary-200: #CFE8DD;
+  --color-primary-300: #9FD6BE;
+  --color-primary-400: #63BE97;
+  --color-primary-500: #2FA66A;
+  --color-primary-600: #1F8A58;
+  --color-primary-700: #0F6B4F;
+  --color-primary-800: #0A5240;
+  --color-primary-900: #0A3D2E;
+  --color-primary-950: #05241B;
+
+  /* Cores de acento - Turquesa */
+  --color-accent: #1EC6B6;
+  --color-accent-50: #EBFFFC;
+  --color-accent-100: #CFFFF8;
+  --color-accent-200: #9EF8EF;
+  --color-accent-300: #67EDE0;
+  --color-accent-400: #39DCCB;
+  --color-accent-500: #1EC6B6;
+  --color-accent-600: #13A596;
+  --color-accent-700: #12857B;
+  --color-accent-800: #136A63;
+  --color-accent-900: #145752;
+
+  /* Cores de destaque - Amarelo/Dourado */
+  --color-highlight: #FFB200;
+  --color-highlight-50: #FFF8E8;
+  --color-highlight-100: #FFEFBE;
+  --color-highlight-200: #FFE08A;
+  --color-highlight-300: #FFD056;
+  --color-highlight-400: #FFC229;
+  --color-highlight-500: #FFB200;
+  --color-highlight-600: #DB9600;
+  --color-highlight-700: #B67900;
+  --color-highlight-800: #915E00;
+  --color-highlight-900: #6B4500;
+
+  /* Cores secundárias (alias para primary) */
+  --color-secondary-50: #F7FBF9;
+  --color-secondary-100: #EAF7F2;
+  --color-secondary-200: #CFE8DD;
+  --color-secondary-300: #9FD6BE;
+  --color-secondary-400: #63BE97;
+  --color-secondary-500: #2FA66A;
+  --color-secondary-600: #1F8A58;
+  --color-secondary-700: #0F6B4F;
+  --color-secondary-800: #0A5240;
+  --color-secondary-900: #0A3D2E;
+  --color-secondary-950: #05241B;
+
+  /* Cores de superfície e fundo */
+  --color-surface: #F7FBF9;
+  --color-border: #CFE8DD;
+  --color-background-light: #F7FBF9;
+  --color-background-dark: #0A3D2E;
+
+  /* Cores de texto */
+  --color-text: #123127;
+  --color-text-muted: #5F7D73;
+  --color-text-inverted: #FFFFFF;
+
+  /* Sombras customizadas */
+  --shadow-duevento: 0 10px 30px rgba(15, 107, 79, 0.12);
+  --shadow-duevento-sm: 0 4px 12px rgba(15, 107, 79, 0.08);
+
+  /* Border radius customizado */
+  --radius-duevento: 1rem;
 
   /* Fontes */
   --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
@@ -51,4 +179,6 @@ html {
 
 body {
   @apply font-sans antialiased;
+  color: var(--color-text);
+  background-color: var(--color-surface);
 }
