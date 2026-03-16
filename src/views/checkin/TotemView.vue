@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useCheckinStore } from '@/stores/checkin'
 import { useEventoPublicoStore } from '@/stores/eventoPublico'
 import QRScanner from '@/components/checkin/QRScanner.vue'
@@ -8,7 +8,6 @@ import CheckinConfirmacao from '@/components/checkin/CheckinConfirmacao.vue'
 import Spinner from '@/components/ui/Spinner.vue'
 
 const route = useRoute()
-const router = useRouter()
 const checkinStore = useCheckinStore()
 const eventoStore = useEventoPublicoStore()
 
