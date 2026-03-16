@@ -1,39 +1,58 @@
 <script setup lang="ts">
 const features = [
-  'Gestao completa do ciclo de vida do evento',
-  'Dashboard de KPIs em tempo real',
-  'Aplicativo exclusivo para expositores',
-  'Suporte tecnico especializado 24/7',
+  { title: 'Check-in inteligente', description: 'Reduza filas em ate 70% com QR Code e offline mode.' },
+  { title: 'Analytics em Tempo Real', description: 'Acompanhe metricas de visitantes e expositores em tempo real.' },
+  { title: 'Gestao Centralizada 360', description: 'Administre tudo de um unico painel de controle.' },
+  { title: 'Suporte Comercial 24/7', description: 'Equipe dedicada disponivel quando voce precisar.' },
 ]
 </script>
 
 <template>
-  <section id="solucao" class="py-16 px-4 bg-primary text-white overflow-hidden">
-    <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12">
-      <div class="w-full lg:w-1/2">
-        <div class="rounded-3xl shadow-2xl border-4 border-white/20 bg-white/10 aspect-video flex items-center justify-center">
-          <svg class="h-24 w-24 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
+  <section id="solucoes" class="py-20 px-6 bg-gray-50">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <!-- Logo grande -->
+        <div class="flex flex-col items-center lg:items-start">
+          <img src="/logo-icon.png" alt="" class="h-32 mb-4" />
+          <span class="text-4xl font-bold text-primary">duevento</span>
         </div>
-      </div>
-      <div class="w-full lg:w-1/2">
-        <h2 class="text-4xl font-black mb-6 leading-tight">BizzExpo resolve tudo isso</h2>
-        <p class="text-white/80 text-lg mb-8">
-          Nossa plataforma foi desenhada para eliminar atritos e maximizar o valor gerado para organizadores e visitantes.
-        </p>
-        <ul class="space-y-4">
-          <li
-            v-for="feature in features"
-            :key="feature"
-            class="flex items-center gap-3"
-          >
-            <svg class="h-6 w-6 text-accent-yellow flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+        <!-- Conteudo -->
+        <div>
+          <h2 class="text-gray-900 text-3xl md:text-4xl font-bold mb-4">
+            duevento resolve tudo isso
+          </h2>
+          <p class="text-gray-500 text-lg mb-8">
+            Nossa plataforma foi desenvolvida para dar controle total aos organizadores, oferecendo uma solucao 360 para todo o ciclo de vida do evento.
+          </p>
+
+          <!-- Lista de features -->
+          <div class="space-y-4">
+            <div
+              v-for="feature in features"
+              :key="feature.title"
+              class="flex items-start gap-3"
+            >
+              <div class="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div>
+                <span class="font-semibold text-gray-900">{{ feature.title }}</span>
+                <span class="text-gray-500"> - {{ feature.description }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Link -->
+          <button class="mt-8 text-primary font-semibold hover:underline inline-flex items-center gap-2">
+            Conheca todas as funcionalidades
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
             </svg>
-            <span class="font-medium">{{ feature }}</span>
-          </li>
-        </ul>
+          </button>
+        </div>
       </div>
     </div>
   </section>

@@ -16,18 +16,18 @@
   --color-slate-900: #0A3D2E;
   --color-slate-950: #05241B;
 
-  /* Blue → Primary (verde) */
-  --color-blue-50: #F7FBF9;
-  --color-blue-100: #EAF7F2;
-  --color-blue-200: #CFE8DD;
-  --color-blue-300: #9FD6BE;
-  --color-blue-400: #63BE97;
-  --color-blue-500: #2FA66A;
-  --color-blue-600: #1F8A58;
-  --color-blue-700: #0F6B4F;
-  --color-blue-800: #0A5240;
-  --color-blue-900: #0A3D2E;
-  --color-blue-950: #05241B;
+  /* Blue → Primary (verde duevento) */
+  --color-blue-50: #F0FDF9;
+  --color-blue-100: #E0FBF2;
+  --color-blue-200: #C0F5E3;
+  --color-blue-300: #8EEACC;
+  --color-blue-400: #52D9AD;
+  --color-blue-500: #28C18E;
+  --color-blue-600: #1A9E72;
+  --color-blue-700: #006b44;
+  --color-blue-800: #005435;
+  --color-blue-900: #004028;
+  --color-blue-950: #00261A;
 
   /* Gray → tons neutros */
   --color-gray-50: #F7FBF9;
@@ -94,21 +94,21 @@
   --color-amber-900: #6B4500;
   --color-amber-950: #422A00;
 
-  /* Cores primárias - Verde Duevento */
-  --color-primary: #0F6B4F;
-  --color-primary-light: #1F8A58;
-  --color-primary-dark: #0A5240;
-  --color-primary-50: #F7FBF9;
-  --color-primary-100: #EAF7F2;
-  --color-primary-200: #CFE8DD;
-  --color-primary-300: #9FD6BE;
-  --color-primary-400: #63BE97;
-  --color-primary-500: #2FA66A;
-  --color-primary-600: #1F8A58;
-  --color-primary-700: #0F6B4F;
-  --color-primary-800: #0A5240;
-  --color-primary-900: #0A3D2E;
-  --color-primary-950: #05241B;
+  /* Cores primárias - Verde Duevento (stitch.zip) */
+  --color-primary: #006b44;
+  --color-primary-light: #1A9E72;
+  --color-primary-dark: #005435;
+  --color-primary-50: #F0FDF9;
+  --color-primary-100: #E0FBF2;
+  --color-primary-200: #C0F5E3;
+  --color-primary-300: #8EEACC;
+  --color-primary-400: #52D9AD;
+  --color-primary-500: #28C18E;
+  --color-primary-600: #1A9E72;
+  --color-primary-700: #006b44;
+  --color-primary-800: #005435;
+  --color-primary-900: #004028;
+  --color-primary-950: #00261A;
 
   /* Cores de acento - Turquesa */
   --color-accent: #1EC6B6;
@@ -137,17 +137,17 @@
   --color-highlight-900: #6B4500;
 
   /* Cores secundárias (alias para primary) */
-  --color-secondary-50: #F7FBF9;
-  --color-secondary-100: #EAF7F2;
-  --color-secondary-200: #CFE8DD;
-  --color-secondary-300: #9FD6BE;
-  --color-secondary-400: #63BE97;
-  --color-secondary-500: #2FA66A;
-  --color-secondary-600: #1F8A58;
-  --color-secondary-700: #0F6B4F;
-  --color-secondary-800: #0A5240;
-  --color-secondary-900: #0A3D2E;
-  --color-secondary-950: #05241B;
+  --color-secondary-50: #F0FDF9;
+  --color-secondary-100: #E0FBF2;
+  --color-secondary-200: #C0F5E3;
+  --color-secondary-300: #8EEACC;
+  --color-secondary-400: #52D9AD;
+  --color-secondary-500: #28C18E;
+  --color-secondary-600: #1A9E72;
+  --color-secondary-700: #006b44;
+  --color-secondary-800: #005435;
+  --color-secondary-900: #004028;
+  --color-secondary-950: #00261A;
 
   /* Cores de superfície e fundo */
   --color-surface: #F7FBF9;
@@ -160,16 +160,17 @@
   --color-text-muted: #5F7D73;
   --color-text-inverted: #FFFFFF;
 
-  /* Sombras customizadas */
-  --shadow-duevento: 0 10px 30px rgba(15, 107, 79, 0.12);
-  --shadow-duevento-sm: 0 4px 12px rgba(15, 107, 79, 0.08);
+  /* Sombras customizadas (baseadas no primary #006b44) */
+  --shadow-duevento: 0 10px 30px rgba(0, 107, 68, 0.12);
+  --shadow-duevento-sm: 0 4px 12px rgba(0, 107, 68, 0.08);
 
-  /* Border radius customizado */
-  --radius-duevento: 1rem;
+  /* Border radius customizado (stitch.zip: 8px) */
+  --radius-duevento: 8px;
+  --radius-theme: 8px;
 
-  /* Fontes */
-  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Inter', sans-serif;
+  /* Fontes (stitch.zip: Plus Jakarta Sans) */
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Plus Jakarta Sans', sans-serif;
 }
 
 /* Reset básico */

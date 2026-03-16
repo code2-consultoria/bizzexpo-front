@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
-import BrandLogo from '@/components/ui/BrandLogo.vue'
-import AuthHeroImage from '@/components/auth/AuthHeroImage.vue'
-import SocialLoginButtons from '@/components/auth/SocialLoginButtons.vue'
+import AuthLayout from '@/components/layout/AuthLayout.vue'
 import { useForm } from '@/composables/useForm'
 import { useAuthStore } from '@/stores/auth'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const showPassword = ref(false)
+const rememberMe = ref(false)
 
 const { form, loading, generalError, getError, submit } = useForm({
   email: '',
@@ -31,120 +30,128 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="relative flex min-h-screen w-full flex-col bg-background-light dark:bg-background-dark">
-    <!-- Logo -->
-    <div class="mb-8 mt-4 flex items-center justify-center">
-      <BrandLogo size="lg" />
-    </div>
-
-    <!-- Hero Image -->
-    <div class="px-4">
-      <AuthHeroImage />
-    </div>
-
-    <!-- Welcome Headline -->
-    <div class="px-4 pt-6 pb-2">
-      <h1 class="text-slate-900 dark:text-slate-100 tracking-tight text-[32px] font-bold leading-tight text-center">
-        Bem-vindo de volta
-      </h1>
-      <p class="text-slate-500 dark:text-slate-400 text-center text-sm mt-1">
-        Por favor, insira seus dados para entrar
-      </p>
-    </div>
-
-    <!-- Login Form -->
-    <form class="flex flex-col gap-1 px-4 py-3" @submit.prevent="handleSubmit">
-      <!-- Erro geral -->
-      <div v-if="generalError" class="p-3 mb-4 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
-        {{ generalError }}
+  <AuthLayout>
+    <!-- Card de Login -->
+    <div class="w-full max-w-md bg-white rounded-xl shadow-xl p-8">
+      <!-- Titulo -->
+      <div class="text-center mb-8">
+        <h1 class="text-2xl font-bold text-gray-900">Bem-vindo de volta</h1>
+        <p class="text-gray-500 mt-2">Acesse sua conta para continuar</p>
       </div>
 
-      <!-- Email -->
-      <div class="flex flex-col w-full py-2">
-        <label class="flex flex-col flex-1">
-          <p class="text-slate-700 dark:text-slate-300 text-sm font-semibold leading-normal pb-2">
-            Email
-          </p>
+      <!-- Formulario -->
+      <form @submit.prevent="handleSubmit" class="space-y-5">
+        <!-- Erro geral -->
+        <div v-if="generalError" class="p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+          {{ generalError }}
+        </div>
+
+        <!-- E-mail -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">E-mail</label>
           <input
             v-model="form.email"
             type="email"
-            placeholder="alex@empresa.com"
-            class="form-input flex w-full rounded-lg text-slate-900 dark:text-slate-100 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 h-14 placeholder:text-slate-400 p-[15px] text-base font-normal"
+            placeholder="seu@email.com"
+            class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-gray-50 text-gray-900 placeholder-gray-400"
             :class="{ 'border-red-500': getError('email') }"
           />
           <span v-if="getError('email')" class="text-red-500 text-xs mt-1">{{ getError('email') }}</span>
-        </label>
-      </div>
+        </div>
 
-      <!-- Password -->
-      <div class="flex flex-col w-full py-2">
-        <label class="flex flex-col flex-1">
-          <p class="text-slate-700 dark:text-slate-300 text-sm font-semibold leading-normal pb-2">
-            Senha
-          </p>
-          <div class="flex w-full flex-1 items-stretch">
+        <!-- Senha -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Senha</label>
+          <div class="relative">
             <input
               v-model="form.password"
               :type="showPassword ? 'text' : 'password'"
-              placeholder="••••••••"
-              class="form-input flex w-full min-w-0 flex-1 rounded-l-lg text-slate-900 dark:text-slate-100 focus:outline-0 focus:ring-2 focus:ring-primary/50 border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 h-14 placeholder:text-slate-400 p-[15px] border-r-0 text-base font-normal"
+              placeholder="********"
+              class="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary bg-gray-50 text-gray-900 placeholder-gray-400 pr-12"
               :class="{ 'border-red-500': getError('password') }"
             />
             <button
               type="button"
-              class="text-slate-400 flex border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 items-center justify-center pr-[15px] rounded-r-lg border-l-0 hover:text-slate-600 transition-colors"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
               @click="showPassword = !showPassword"
             >
-              <span class="material-symbols-outlined">{{ showPassword ? 'visibility_off' : 'visibility' }}</span>
+              <svg v-if="!showPassword" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              <svg v-else class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+              </svg>
             </button>
           </div>
           <span v-if="getError('password')" class="text-red-500 text-xs mt-1">{{ getError('password') }}</span>
-        </label>
-      </div>
+        </div>
 
-      <!-- Forgot Password -->
-      <div class="flex justify-end pt-1">
-        <RouterLink to="/forgot-password" class="text-primary text-sm font-semibold hover:underline">
-          Esqueceu a senha?
-        </RouterLink>
-      </div>
+        <!-- Lembrar + Esqueci senha -->
+        <div class="flex items-center justify-between">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input
+              v-model="rememberMe"
+              type="checkbox"
+              class="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary"
+            />
+            <span class="text-sm text-gray-600">Lembrar de mim</span>
+          </label>
+          <RouterLink to="/forgot-password" class="text-sm text-primary font-medium hover:underline">
+            Esqueci a senha
+          </RouterLink>
+        </div>
 
-      <!-- Login Button -->
-      <div class="pt-6">
+        <!-- Botao Entrar -->
         <button
           type="submit"
           :disabled="loading"
-          class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg shadow-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          class="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm hover:shadow-md"
         >
           <span v-if="loading">Entrando...</span>
-          <template v-else>
-            Entrar
-            <span class="material-symbols-outlined text-xl">login</span>
-          </template>
+          <span v-else>Entrar</span>
+        </button>
+      </form>
+
+      <!-- Divisor -->
+      <div class="flex items-center gap-4 my-6">
+        <div class="flex-1 h-px bg-gray-200"></div>
+        <span class="text-sm text-gray-400">Ou entre com</span>
+        <div class="flex-1 h-px bg-gray-200"></div>
+      </div>
+
+      <!-- Botoes Sociais -->
+      <div class="flex gap-4">
+        <button
+          type="button"
+          class="flex-1 flex items-center justify-center gap-2 px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          <span class="text-sm font-medium text-gray-700">Google</span>
+        </button>
+        <button
+          type="button"
+          class="flex-1 flex items-center justify-center gap-2 px-4 py-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+        >
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#0A66C2">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+          <span class="text-sm font-medium text-gray-700">LinkedIn</span>
         </button>
       </div>
-
-      <!-- Social Logins -->
-      <div class="py-6">
-        <SocialLoginButtons />
-      </div>
-    </form>
-
-    <!-- Signup Footer -->
-    <div class="mt-auto p-8 border-t border-slate-200 dark:border-slate-800 flex justify-center bg-white dark:bg-slate-900/50">
-      <p class="text-slate-600 dark:text-slate-400 text-sm">
-        Nao tem uma conta?
-        <RouterLink to="/register" class="text-primary font-bold hover:underline ml-1">
-          Criar conta
-        </RouterLink>
-      </p>
     </div>
 
-    <!-- Accent Brand Elements -->
-    <div class="absolute bottom-0 left-0 w-full h-1 flex">
-      <div class="h-full bg-primary flex-1"></div>
-      <div class="h-full bg-accent-yellow w-1/4"></div>
-      <div class="h-full bg-accent-red w-1/4"></div>
-    </div>
-  </div>
+    <!-- Link para cadastro -->
+    <p class="mt-6 text-center text-sm text-gray-600">
+      Nao tem uma conta?
+      <RouterLink to="/register" class="text-primary font-semibold hover:underline ml-1">
+        Cadastre-se
+      </RouterLink>
+    </p>
+  </AuthLayout>
 </template>
