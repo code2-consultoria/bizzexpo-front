@@ -16,6 +16,11 @@ const menuItems = [
     path: '/eventos',
     icon: 'calendar',
   },
+  {
+    name: 'Minhas Faturas',
+    path: '/minhas-faturas',
+    icon: 'receipt',
+  },
 ]
 
 const adminMenuItems = [
@@ -66,6 +71,9 @@ function getInitials(name: string | undefined) {
         </svg>
         <svg v-if="item.icon === 'calendar'" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <svg v-if="item.icon === 'receipt'" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
         </svg>
         <span>{{ item.name }}</span>
       </RouterLink>
