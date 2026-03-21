@@ -5,6 +5,7 @@ import AppLayout from '@/components/layout/AppLayout.vue'
 import Card from '@/components/ui/Card.vue'
 import Button from '@/components/ui/Button.vue'
 import Spinner from '@/components/ui/Spinner.vue'
+import Toast from '@/components/ui/Toast.vue'
 import { useFaturasStore } from '@/stores/faturas'
 import type { Parcela } from '@/types'
 
@@ -22,6 +23,11 @@ const erroLocal = ref<string | null>(null)
 // PIX
 const pixGerado = ref(false)
 const copiado = ref(false)
+
+// Toast
+const showToast = ref(false)
+const toastMessage = ref('')
+const toastType = ref<'success' | 'error' | 'info'>('success')
 
 onMounted(async () => {
   await faturasStore.fetchFatura(faturaId.value)
@@ -64,13 +70,31 @@ async function handleGerarPix() {
 }
 
 async function copiarCodigoPix() {
-  if (faturasStore.pagamentoAtual?.pix_copia_cola) {
-    await navigator.clipboard.writeText(faturasStore.pagamentoAtual.pix_copia_cola)
-    copiado.value = true
-    setTimeout(() => {
-      copiado.value = false
-    }, 2000)
+  const codigoPix = faturasStore.pagamentoAtual?.pix_copia_cola
+  if (codigoPix) {
+    try {
+      await navigator.clipboard.writeText(codigoPix)
+      copiado.value = true
+      toastMessage.value = 'Codigo PIX copiado!'
+      toastType.value = 'success'
+      showToast.value = true
+      setTimeout(() => {
+        copiado.value = false
+      }, 2000)
+    } catch {
+      toastMessage.value = 'Erro ao copiar codigo'
+      toastType.value = 'error'
+      showToast.value = true
+    }
+  } else {
+    toastMessage.value = 'Codigo PIX nao disponivel'
+    toastType.value = 'error'
+    showToast.value = true
   }
+}
+
+function onToastClose() {
+  showToast.value = false
 }
 
 function handleVoltar() {
@@ -97,6 +121,12 @@ watch(
 
 <template>
   <AppLayout title="Pagamento">
+    <Toast
+      :show="showToast"
+      :message="toastMessage"
+      :type="toastType"
+      @close="onToastClose"
+    />
     <div class="max-w-2xl mx-auto">
       <div v-if="faturasStore.loading && !faturasStore.faturaAtual" class="flex justify-center py-12">
         <Spinner size="lg" />
