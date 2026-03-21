@@ -57,6 +57,13 @@ export interface Evento {
   created_at: string
   updated_at: string
   expositores_count?: number
+  fatura?: {
+    id: string
+    numero: string
+    status: StatusFatura
+    total: number
+    vencimento: string
+  }
 }
 
 export interface PlanoInfo {

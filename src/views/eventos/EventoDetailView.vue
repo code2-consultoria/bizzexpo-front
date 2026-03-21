@@ -263,6 +263,66 @@ function getStatusBadge(status: string) {
 
         <!-- Sidebar -->
         <div class="space-y-6">
+          <!-- Card de Fatura -->
+          <div
+            v-if="eventosStore.eventoAtual.fatura"
+            class="bg-white rounded-xl border border-gray-200 p-5"
+            :class="{
+              'border-amber-300 bg-amber-50': eventosStore.eventoAtual.fatura.status === 'pendente',
+              'border-green-300 bg-green-50': eventosStore.eventoAtual.fatura.status === 'paga',
+            }"
+          >
+            <div class="flex items-center justify-between mb-3">
+              <h3 class="text-sm font-semibold text-gray-700 uppercase tracking-wider">Fatura do Evento</h3>
+              <span
+                class="px-2 py-1 text-xs font-medium rounded-full"
+                :class="{
+                  'bg-amber-100 text-amber-700': eventosStore.eventoAtual.fatura.status === 'pendente',
+                  'bg-green-100 text-green-700': eventosStore.eventoAtual.fatura.status === 'paga',
+                  'bg-gray-100 text-gray-600': !['pendente', 'paga'].includes(eventosStore.eventoAtual.fatura.status),
+                }"
+              >
+                {{ eventosStore.eventoAtual.fatura.status === 'pendente' ? 'Pendente' :
+                   eventosStore.eventoAtual.fatura.status === 'paga' ? 'Paga' :
+                   eventosStore.eventoAtual.fatura.status }}
+              </span>
+            </div>
+
+            <div class="space-y-2 mb-4">
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-500">Numero:</span>
+                <span class="font-medium text-gray-900">#{{ eventosStore.eventoAtual.fatura.numero }}</span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-500">Valor:</span>
+                <span class="font-semibold text-gray-900">
+                  {{ new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(eventosStore.eventoAtual.fatura.total) }}
+                </span>
+              </div>
+              <div class="flex justify-between text-sm">
+                <span class="text-gray-500">Vencimento:</span>
+                <span class="text-gray-900">
+                  {{ new Date(eventosStore.eventoAtual.fatura.vencimento).toLocaleDateString('pt-BR') }}
+                </span>
+              </div>
+            </div>
+
+            <router-link
+              v-if="eventosStore.eventoAtual.fatura.status === 'pendente'"
+              :to="`/faturas/${eventosStore.eventoAtual.fatura.id}/pagar`"
+              class="block w-full py-2.5 bg-primary hover:bg-primary-dark text-white text-center font-semibold rounded-lg transition-colors"
+            >
+              Pagar Fatura
+            </router-link>
+            <router-link
+              v-else
+              :to="`/faturas/${eventosStore.eventoAtual.fatura.id}`"
+              class="block w-full py-2.5 border border-gray-300 text-gray-700 text-center font-medium rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              Ver Detalhes
+            </router-link>
+          </div>
+
           <!-- Link de Promocao -->
           <div class="bg-primary/5 rounded-xl border border-primary/20 p-5">
             <h3 class="text-sm font-semibold text-primary uppercase tracking-wider mb-3">Link de Promocao</h3>
