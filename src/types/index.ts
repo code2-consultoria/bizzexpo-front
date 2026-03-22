@@ -158,12 +158,36 @@ export interface Carrinho {
   updated_at?: string
 }
 
-export interface Produto {
+export type TipoProduto = 'estande' | 'marketing' | 'equipamento' | 'servico'
+
+export interface CategoriaProduto {
   id: string
   nome: string
   descricao?: string
-  tipo: 'estande' | 'marketing' | 'equipamento' | 'servico'
+  ativo: boolean
+  produtos_count?: number
+  created_at?: string
+  updated_at?: string
+}
+
+export interface Produto {
+  id: string
+  categoria_id: string
+  categoria?: CategoriaProduto
+  nome: string
+  descricao?: string
+  tipo: TipoProduto
   preco_base: number
+  ativo: boolean
+  created_at?: string
+  updated_at?: string
+}
+
+export interface ProdutoEvento {
+  id: string
+  produto_id: string
+  evento_id: string
+  preco: number
   ativo: boolean
 }
 

@@ -234,6 +234,24 @@ const router = createRouter({
       component: () => import('@/views/admin/FinanceiroView.vue'),
       meta: { requiresAuth: true, requiresAdmin: true },
     },
+    {
+      path: '/admin/catalogo',
+      name: 'admin-catalogo',
+      component: () => import('@/views/admin/catalogo/CatalogoView.vue'),
+      meta: { requiresAuth: true, requiresAdmin: true },
+    },
+    {
+      path: '/admin/faturas',
+      name: 'admin-faturas',
+      component: () => import('@/views/admin/faturas/FaturasAdminView.vue'),
+      meta: { requiresAuth: true, requiresAdmin: true },
+    },
+    {
+      path: '/admin/faturas/:id',
+      name: 'admin-fatura-detalhes',
+      component: () => import('@/views/admin/faturas/FaturaAdminDetailView.vue'),
+      meta: { requiresAuth: true, requiresAdmin: true },
+    },
   ],
 })
 
