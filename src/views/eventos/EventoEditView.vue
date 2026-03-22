@@ -7,6 +7,7 @@ import Spinner from '@/components/ui/Spinner.vue'
 import EventoForm from '@/components/eventos/EventoForm.vue'
 import { useForm } from '@/composables/useForm'
 import { useEventosStore } from '@/stores/eventos'
+import type { PlanoEvento } from '@/types'
 
 const route = useRoute()
 const router = useRouter()
@@ -19,7 +20,7 @@ const { form, loading, errors, submit } = useForm({
   data_inicio: '',
   data_fim: '',
   local: '',
-  plano: undefined as string | undefined,
+  plano: undefined as PlanoEvento | undefined,
 })
 
 const faturaPaga = computed(() => {
