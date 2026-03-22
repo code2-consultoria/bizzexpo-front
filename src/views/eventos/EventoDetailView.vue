@@ -3,6 +3,7 @@ import { onMounted, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AppLayout from '@/components/layout/AppLayout.vue'
 import Spinner from '@/components/ui/Spinner.vue'
+import Drawer from '@/components/ui/Drawer.vue'
 import { useEventosStore } from '@/stores/eventos'
 import { useAuthStore } from '@/stores/auth'
 
@@ -14,6 +15,7 @@ const authStore = useAuthStore()
 const confirmDelete = ref(false)
 const statusLoading = ref(false)
 const linkCopiado = ref(false)
+const showFaturaDrawer = ref(false)
 
 // Modal de pagamento (admin)
 const showPagamentoModal = ref(false)
@@ -341,13 +343,13 @@ function getStatusBadge(status: string) {
             >
               Pagar Fatura
             </router-link>
-            <router-link
+            <button
               v-else
-              :to="`/faturas/${eventosStore.eventoAtual.fatura.id}`"
-              class="block w-full py-2.5 border border-gray-300 text-gray-700 text-center font-medium rounded-lg hover:bg-gray-50 transition-colors"
+              @click="showFaturaDrawer = true"
+              class="w-full py-2.5 border border-gray-300 text-gray-700 text-center font-medium rounded-lg hover:bg-gray-50 transition-colors"
             >
               Ver Detalhes
-            </router-link>
+            </button>
           </div>
 
           <!-- Acoes Rapidas -->
@@ -564,5 +566,70 @@ function getStatusBadge(status: string) {
         </div>
       </div>
     </Teleport>
+
+    <!-- Drawer de Detalhes da Fatura -->
+    <Drawer
+      :open="showFaturaDrawer"
+      title="Detalhes da Fatura"
+      @close="showFaturaDrawer = false"
+    >
+      <div v-if="eventosStore.eventoAtual?.fatura" class="space-y-6">
+        <!-- Status -->
+        <div class="flex items-center justify-between">
+          <span class="text-sm text-gray-500">Status</span>
+          <span
+            class="px-3 py-1 text-sm font-medium rounded-full"
+            :class="{
+              'bg-amber-100 text-amber-700': eventosStore.eventoAtual.fatura.status === 'pendente',
+              'bg-green-100 text-green-700': eventosStore.eventoAtual.fatura.status === 'paga',
+              'bg-gray-100 text-gray-600': !['pendente', 'paga'].includes(eventosStore.eventoAtual.fatura.status),
+            }"
+          >
+            {{ eventosStore.eventoAtual.fatura.status === 'pendente' ? 'Pendente' :
+               eventosStore.eventoAtual.fatura.status === 'paga' ? 'Paga' :
+               eventosStore.eventoAtual.fatura.status }}
+          </span>
+        </div>
+
+        <!-- Informacoes -->
+        <div class="bg-gray-50 rounded-lg p-4 space-y-3">
+          <div class="flex justify-between">
+            <span class="text-sm text-gray-500">Numero</span>
+            <span class="text-sm font-medium text-gray-900">#{{ eventosStore.eventoAtual.fatura.numero }}</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-sm text-gray-500">Vencimento</span>
+            <span class="text-sm text-gray-900">
+              {{ new Date(eventosStore.eventoAtual.fatura.vencimento).toLocaleDateString('pt-BR') }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Valor Total -->
+        <div class="bg-primary/5 rounded-lg p-4">
+          <div class="flex justify-between items-center">
+            <span class="text-sm font-medium text-gray-700">Valor Total</span>
+            <span class="text-2xl font-bold text-primary">
+              {{ new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(eventosStore.eventoAtual.fatura.total) }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Evento -->
+        <div class="border-t border-gray-100 pt-4">
+          <p class="text-xs text-gray-500 uppercase tracking-wider mb-2">Evento</p>
+          <p class="text-sm font-medium text-gray-900">{{ eventosStore.eventoAtual.nome }}</p>
+        </div>
+      </div>
+
+      <template #footer>
+        <button
+          @click="showFaturaDrawer = false"
+          class="w-full py-2.5 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+        >
+          Fechar
+        </button>
+      </template>
+    </Drawer>
   </AppLayout>
 </template>
