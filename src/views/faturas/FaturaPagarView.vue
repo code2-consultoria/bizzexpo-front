@@ -23,6 +23,7 @@ const erroLocal = ref<string | null>(null)
 // PIX
 const pixGerado = ref(false)
 const copiado = ref(false)
+const pixExpirado = ref(false)
 
 // Toast
 const showToast = ref(false)
@@ -33,7 +34,7 @@ onMounted(async () => {
   await faturasStore.fetchFatura(faturaId.value)
   await faturasStore.fetchParcelas(faturaId.value)
 
-  // Verificar se ja existe pagamento PIX pendente e valido
+  // Verificar se ja existe pagamento PIX pendente
   const fatura = faturasStore.faturaAtual
   if (fatura?.pagamentos?.length) {
     // Buscar PIX pendente e valido
@@ -44,6 +45,14 @@ onMounted(async () => {
       // Setar o pagamento existente na store
       faturasStore.pagamentoAtual = pagamentoPix
       pixGerado.value = true
+    } else {
+      // Verificar se existe PIX expirado
+      const pixExpiradoExistente = fatura.pagamentos.find(
+        (p) => p.metodo === 'pix' && p.status === 'pendente' && p.pix_valido === false
+      )
+      if (pixExpiradoExistente) {
+        pixExpirado.value = true
+      }
     }
   }
 })
@@ -241,6 +250,21 @@ watch(
 
         <!-- Selecao de Metodo -->
         <Card v-else>
+          <!-- Aviso de PIX expirado -->
+          <div v-if="pixExpirado" class="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
+            <div class="flex items-start gap-3">
+              <svg class="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <p class="text-sm font-medium text-amber-800">PIX anterior expirado</p>
+                <p class="text-sm text-amber-600 mt-1">
+                  O QR Code PIX gerado anteriormente expirou. Gere um novo para continuar.
+                </p>
+              </div>
+            </div>
+          </div>
+
           <h3 class="text-lg font-semibold text-gray-900 mb-6">Forma de pagamento</h3>
 
           <!-- Opcoes de Metodo -->
