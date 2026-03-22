@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import Card from '@/components/ui/Card.vue'
 import StatusBadge from './StatusBadge.vue'
@@ -8,7 +9,14 @@ interface Props {
   evento: Evento
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
+
+const statusFatura = computed(() => {
+  if (props.evento.fatura_paga) {
+    return { label: 'Pago', class: 'bg-green-100 text-green-700' }
+  }
+  return { label: 'Nao pago', class: 'bg-amber-100 text-amber-700' }
+})
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString('pt-BR', {
@@ -28,7 +36,15 @@ function formatDate(date: string) {
             <h3 class="text-lg font-medium text-gray-900">{{ evento.nome }}</h3>
             <p class="text-sm text-gray-500 mt-1">{{ evento.local }}</p>
           </div>
-          <StatusBadge :status="evento.status" />
+          <div class="flex flex-col items-end gap-1.5">
+            <StatusBadge :status="evento.status" />
+            <span
+              class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium"
+              :class="statusFatura.class"
+            >
+              {{ statusFatura.label }}
+            </span>
+          </div>
         </div>
 
         <div class="mt-4 flex items-center gap-4 text-sm text-gray-600">
