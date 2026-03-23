@@ -221,7 +221,16 @@ function getStatusBadge(status: string) {
             </div>
 
             <!-- Botoes de navegacao -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 pt-6 border-t border-gray-100">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 pt-6 border-t border-gray-100">
+              <button
+                @click="router.push(`/eventos/${eventosStore.eventoAtual.id}/marketplace`)"
+                class="flex flex-col items-center gap-2 p-4 rounded-lg border border-primary/30 bg-primary/5 hover:border-primary hover:bg-primary/10 transition-colors"
+              >
+                <svg class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span class="text-sm font-medium text-primary">Marketplace</span>
+              </button>
               <button
                 @click="router.push(`/eventos/${eventosStore.eventoAtual.id}/expositores`)"
                 class="flex flex-col items-center gap-2 p-4 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-colors"

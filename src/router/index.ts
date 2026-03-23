@@ -87,6 +87,18 @@ const router = createRouter({
       component: () => import('@/views/eventos/EventoEditView.vue'),
       meta: { requiresAuth: true },
     },
+    {
+      path: '/eventos/:id/marketplace',
+      name: 'evento-marketplace',
+      component: () => import('@/views/eventos/MarketplaceView.vue'),
+      meta: { requiresAuth: true },
+    },
+    {
+      path: '/eventos/:id/carrinho',
+      name: 'evento-carrinho',
+      component: () => import('@/views/eventos/CarrinhoView.vue'),
+      meta: { requiresAuth: true },
+    },
     // Expositores
     {
       path: '/eventos/:eventoId/expositores',
