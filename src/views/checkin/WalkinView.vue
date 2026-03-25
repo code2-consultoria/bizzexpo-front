@@ -9,6 +9,7 @@ import WalkinForm from '@/components/checkin/WalkinForm.vue'
 import CheckinConfirmacao from '@/components/checkin/CheckinConfirmacao.vue'
 import AppLayout from '@/components/layout/AppLayout.vue'
 import Spinner from '@/components/ui/Spinner.vue'
+import Toast from '@/components/ui/Toast.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -19,6 +20,21 @@ const categoriasStore = useCategoriasStore()
 const eventoId = route.params.eventoId as string
 const errors = ref<Record<string, string[]>>({})
 const estado = ref<'formulario' | 'sucesso'>('formulario')
+
+// Toast state
+const showToast = ref(false)
+const toastType = ref<'success' | 'error' | 'warning' | 'info'>('info')
+const toastMessage = ref('')
+
+function mostrarToast(tipo: typeof toastType.value, mensagem: string) {
+  toastType.value = tipo
+  toastMessage.value = mensagem
+  showToast.value = true
+}
+
+function fecharToast() {
+  showToast.value = false
+}
 
 onMounted(async () => {
   await Promise.all([
@@ -40,6 +56,16 @@ const handleSubmit = async (dados: InscricaoForm) => {
       } else if (err.response.data.message) {
         errors.value = { _general: [err.response.data.message] }
       }
+    } else if (err.response?.status === 403) {
+      mostrarToast('error', 'Voce nao tem permissao para registrar walk-in neste evento.')
+    } else if (err.response?.status === 404) {
+      mostrarToast('error', 'Evento nao encontrado.')
+    } else if (err.response?.status >= 500) {
+      mostrarToast('error', 'Erro no servidor. Tente novamente em alguns instantes.')
+    } else if (err.code === 'ERR_NETWORK') {
+      mostrarToast('error', 'Erro de conexao. Verifique sua internet.')
+    } else {
+      mostrarToast('error', 'Erro ao registrar walk-in. Tente novamente.')
     }
   }
 }
@@ -113,5 +139,13 @@ const voltarParaCheckin = () => {
         </template>
       </div>
     </div>
+
+    <!-- Toast de feedback -->
+    <Toast
+      :show="showToast"
+      :type="toastType"
+      :message="toastMessage"
+      @close="fecharToast"
+    />
   </AppLayout>
 </template>

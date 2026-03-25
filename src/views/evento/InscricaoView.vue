@@ -6,6 +6,7 @@ import { useInscricoesStore } from '@/stores/inscricoes'
 import type { InscricaoForm } from '@/types'
 import InscricaoFormComponent from '@/components/evento/InscricaoForm.vue'
 import Spinner from '@/components/ui/Spinner.vue'
+import Toast from '@/components/ui/Toast.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -14,6 +15,21 @@ const inscricoesStore = useInscricoesStore()
 
 const slug = route.params.slug as string
 const errors = ref<Record<string, string[]>>({})
+
+// Toast state
+const showToast = ref(false)
+const toastType = ref<'success' | 'error' | 'warning' | 'info'>('info')
+const toastMessage = ref('')
+
+function mostrarToast(tipo: typeof toastType.value, mensagem: string) {
+  toastType.value = tipo
+  toastMessage.value = mensagem
+  showToast.value = true
+}
+
+function fecharToast() {
+  showToast.value = false
+}
 
 onMounted(async () => {
   // Carrega evento e categorias se ainda nao foram carregados
@@ -46,6 +62,14 @@ const handleSubmit = async (dados: InscricaoForm) => {
         // Mensagem de erro de negocio (ex: inscricao duplicada)
         errors.value = { _general: [err.response.data.message] }
       }
+    } else if (err.response?.status === 404) {
+      mostrarToast('error', 'Evento nao encontrado.')
+    } else if (err.response?.status >= 500) {
+      mostrarToast('error', 'Erro no servidor. Tente novamente em alguns instantes.')
+    } else if (err.code === 'ERR_NETWORK') {
+      mostrarToast('error', 'Erro de conexao. Verifique sua internet.')
+    } else {
+      mostrarToast('error', 'Erro ao realizar inscricao. Tente novamente.')
     }
   }
 }
@@ -129,5 +153,13 @@ const handleSubmit = async (dados: InscricaoForm) => {
         </div>
       </main>
     </template>
+
+    <!-- Toast de feedback -->
+    <Toast
+      :show="showToast"
+      :type="toastType"
+      :message="toastMessage"
+      @close="fecharToast"
+    />
   </div>
 </template>

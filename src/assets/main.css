@@ -149,11 +149,34 @@
   --color-secondary-900: #004028;
   --color-secondary-950: #00261A;
 
-  /* Cores de superfície e fundo */
+  /* Cores de superfície e fundo (Material Design 3) */
   --color-surface: #F7FBF9;
+  --color-surface-container-lowest: #FFFFFF;
+  --color-surface-container-low: #F7FBF9;
+  --color-surface-container: #EFF5F2;
+  --color-surface-container-high: #E7F0EC;
+  --color-surface-container-highest: #DFE9E4;
+  --color-on-surface: #123127;
+  --color-on-surface-variant: #5F7D73;
   --color-border: #CFE8DD;
+  --color-outline: #9FD6BE;
+  --color-outline-variant: #CFE8DD;
   --color-background-light: #F7FBF9;
   --color-background-dark: #0A3D2E;
+
+  /* Cores de estado - erro/sucesso/warning/info */
+  --color-error: #DC2626;
+  --color-error-container: #FEE2E2;
+  --color-on-error: #FFFFFF;
+  --color-success: #059669;
+  --color-success-container: #D1FAE5;
+  --color-warning: #DB9600;
+  --color-warning-container: #FFEFBE;
+  --color-info: #006b44;
+  --color-info-container: #E0FBF2;
+
+  /* Secondary container */
+  --color-secondary-container: #E0FBF2;
 
   /* Cores de texto */
   --color-text: #123127;
