@@ -9,9 +9,36 @@ interface Props {
 const props = defineProps<Props>()
 const menuAberto = ref(false)
 
+// Extrai texto plano do conteudo (Editor.js JSON ou texto simples)
+function extrairTextoPlano(content: string): string {
+  if (!content) return ''
+
+  try {
+    const data = JSON.parse(content)
+    if (data.blocks && Array.isArray(data.blocks)) {
+      return data.blocks
+        .map((block: { type: string; data: { text?: string; items?: string[] } }) => {
+          if (block.type === 'list' && block.data.items) {
+            return block.data.items.join(', ')
+          }
+          return block.data.text || ''
+        })
+        .filter(Boolean)
+        .join(' ')
+        .replace(/<[^>]*>/g, '') // Remove HTML tags
+    }
+  } catch {
+    // Nao e JSON, retorna como texto removendo HTML
+  }
+
+  return content.replace(/<[^>]*>/g, '')
+}
+
 const formatarDataParaCalendario = (data: string) => {
   return data.replace(/[-:]/g, '').replace('.000Z', 'Z')
 }
+
+const descricaoTexto = computed(() => extrairTextoPlano(props.evento.descricao))
 
 const googleCalendarUrl = computed(() => {
   const inicio = formatarDataParaCalendario(new Date(props.evento.data_inicio).toISOString())
@@ -21,7 +48,7 @@ const googleCalendarUrl = computed(() => {
     action: 'TEMPLATE',
     text: props.evento.nome,
     dates: `${inicio}/${fim}`,
-    details: props.evento.descricao.replace(/<[^>]*>/g, ''),
+    details: descricaoTexto.value,
     location: props.evento.local,
   })
 
@@ -40,7 +67,7 @@ const gerarICS = () => {
     `DTSTART:${inicio}`,
     `DTEND:${fim}`,
     `SUMMARY:${props.evento.nome}`,
-    `DESCRIPTION:${props.evento.descricao.replace(/<[^>]*>/g, '').substring(0, 200)}`,
+    `DESCRIPTION:${descricaoTexto.value.substring(0, 200)}`,
     `LOCATION:${props.evento.local}`,
     'END:VEVENT',
     'END:VCALENDAR',

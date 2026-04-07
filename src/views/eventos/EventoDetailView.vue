@@ -6,6 +6,7 @@ import Spinner from '@/components/ui/Spinner.vue'
 import Drawer from '@/components/ui/Drawer.vue'
 import Modal from '@/components/ui/Modal.vue'
 import Button from '@/components/ui/Button.vue'
+import RichTextRenderer from '@/components/ui/RichTextRenderer.vue'
 import { useEventosStore } from '@/stores/eventos'
 import { useAuthStore } from '@/stores/auth'
 
@@ -217,9 +218,10 @@ function getStatusBadge(status: string) {
             <!-- Descrição -->
             <div class="mb-6">
               <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Descrição</p>
-              <p class="text-sm text-gray-600 leading-relaxed whitespace-pre-wrap">
-                {{ eventosStore.eventoAtual.descricao }}
-              </p>
+              <RichTextRenderer
+                :content="eventosStore.eventoAtual.descricao"
+                class="text-sm text-gray-600 leading-relaxed"
+              />
             </div>
 
             <!-- Botões de navegação -->

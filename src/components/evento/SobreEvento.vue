@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { EventoPublico } from '@/types'
+import RichTextRenderer from '@/components/ui/RichTextRenderer.vue'
 
 interface Props {
   evento: EventoPublico
@@ -15,10 +16,10 @@ defineProps<Props>()
         Sobre o Evento
       </h2>
 
-      <div
+      <RichTextRenderer
+        :content="evento.descricao"
         class="prose prose-slate max-w-none text-slate-600 leading-relaxed"
-        v-html="evento.descricao"
-      ></div>
+      />
 
       <!-- Categorias disponiveis -->
       <div v-if="evento.categorias.length > 0" class="mt-10">
