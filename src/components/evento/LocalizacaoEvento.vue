@@ -34,60 +34,58 @@ const dataHoraFormatada = computed(() => {
 </script>
 
 <template>
-  <section class="py-16 px-4 bg-white">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-8 text-center">
-        Quando e Onde
-      </h2>
+  <div>
+    <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-8">
+      Quando e Onde
+    </h2>
 
-      <div class="grid md:grid-cols-2 gap-8">
-        <!-- Data e Hora -->
-        <div class="bg-slate-50 rounded-2xl p-6">
-          <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <svg class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <div>
-              <h3 class="font-semibold text-slate-900 mb-2">Data e Horario</h3>
-              <p class="text-slate-600 text-sm mb-1">
-                <span class="font-medium">Inicio:</span> {{ dataHoraFormatada.inicio }}
-              </p>
-              <p class="text-slate-600 text-sm">
-                <span class="font-medium">Termino:</span> {{ dataHoraFormatada.fim }}
-              </p>
-            </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Data e Hora -->
+      <div class="bg-slate-50 rounded-2xl p-6">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-semibold text-slate-900 mb-2">Data e Horario</h3>
+            <p class="text-slate-600 text-sm mb-1">
+              <span class="font-medium">Inicio:</span> {{ dataHoraFormatada.inicio }}
+            </p>
+            <p class="text-slate-600 text-sm">
+              <span class="font-medium">Termino:</span> {{ dataHoraFormatada.fim }}
+            </p>
           </div>
         </div>
+      </div>
 
-        <!-- Local -->
-        <div class="bg-slate-50 rounded-2xl p-6">
-          <div class="flex items-start gap-4">
-            <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <svg class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+      <!-- Local -->
+      <div class="bg-slate-50 rounded-2xl p-6">
+        <div class="flex items-start gap-4">
+          <div class="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <svg class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-semibold text-slate-900 mb-2">Local</h3>
+            <p class="text-slate-600 text-sm mb-3">{{ evento.local }}</p>
+            <a
+              :href="googleMapsUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center text-primary text-sm font-medium hover:underline"
+            >
+              Ver no Google Maps
+              <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
               </svg>
-            </div>
-            <div>
-              <h3 class="font-semibold text-slate-900 mb-2">Local</h3>
-              <p class="text-slate-600 text-sm mb-3">{{ evento.local }}</p>
-              <a
-                :href="googleMapsUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center text-primary text-sm font-medium hover:underline"
-              >
-                Ver no Google Maps
-                <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-              </a>
-            </div>
+            </a>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 </template>

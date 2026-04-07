@@ -83,32 +83,40 @@ onMounted(async () => {
         </div>
       </div>
 
-      <!-- Coluna lateral de tickets (desktop) - flutuante a direita -->
-      <div class="hidden lg:block fixed right-8 top-24 w-80 z-10">
-        <TicketSelector
-          :categorias="store.categorias"
-          :evento-slug="store.evento.slug"
-        />
-      </div>
+      <!-- Conteudo principal com layout de duas colunas -->
+      <div class="max-w-6xl mx-auto px-4 py-12">
+        <div class="lg:flex lg:gap-10">
+          <!-- Coluna principal (conteudo) -->
+          <div class="lg:flex-1 min-w-0">
+            <!-- Sobre -->
+            <SobreEvento :evento="store.evento" class="mb-12" />
 
-      <!-- Sobre -->
-      <SobreEvento :evento="store.evento" />
+            <!-- Secao de tickets mobile -->
+            <div class="lg:hidden mb-12">
+              <TicketSelector
+                :categorias="store.categorias"
+                :evento-slug="store.evento.slug"
+              />
+            </div>
 
-      <!-- Secao de tickets mobile -->
-      <div class="lg:hidden px-4 py-8 bg-slate-50">
-        <div class="max-w-md mx-auto">
-          <TicketSelector
-            :categorias="store.categorias"
-            :evento-slug="store.evento.slug"
-          />
+            <!-- Expositores -->
+            <ExpositoresGrid :expositores="store.expositores" class="mb-12" />
+
+            <!-- Localizacao -->
+            <LocalizacaoEvento :evento="store.evento" />
+          </div>
+
+          <!-- Coluna lateral de tickets (desktop) - sticky -->
+          <div class="hidden lg:block lg:w-80 lg:flex-shrink-0">
+            <div class="sticky top-[72px]">
+              <TicketSelector
+                :categorias="store.categorias"
+                :evento-slug="store.evento.slug"
+              />
+            </div>
+          </div>
         </div>
       </div>
-
-      <!-- Expositores -->
-      <ExpositoresGrid :expositores="store.expositores" />
-
-      <!-- Localizacao -->
-      <LocalizacaoEvento :evento="store.evento" />
 
       <!-- CTA Final -->
       <section class="py-16 px-4 bg-primary">
