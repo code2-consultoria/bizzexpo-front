@@ -6,8 +6,10 @@
     "vitest.config.*",
     "cypress.config.*",
     "nightwatch.conf.*",
-    "playwright.config.*",
     "eslint.config.*"
+  ],
+  "exclude": [
+    "playwright.config.*"
   ],
   "compilerOptions": {
     // Most tools use transpilation instead of Node.js's native type-stripping.
