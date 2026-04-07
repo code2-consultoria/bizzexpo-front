@@ -6,6 +6,7 @@ import Button from '@/components/ui/Button.vue'
 import Badge from '@/components/ui/Badge.vue'
 import Input from '@/components/ui/Input.vue'
 import Spinner from '@/components/ui/Spinner.vue'
+import Modal from '@/components/ui/Modal.vue'
 import { useCatalogoStore } from '@/stores/catalogo'
 import type { CategoriaProduto, Produto, TipoProduto } from '@/types'
 
@@ -394,116 +395,104 @@ onMounted(async () => {
       </div>
     </div>
 
-    <!-- Modal -->
-    <Teleport to="body">
-      <div
-        v-if="showModal"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4"
-      >
-        <!-- Backdrop -->
-        <div
-          class="absolute inset-0 bg-black/50"
-          @click="fecharModal"
-        ></div>
-
-        <!-- Modal Content -->
-        <div class="relative bg-white rounded-2xl shadow-xl max-w-md w-full">
-          <div class="p-6">
-            <h2 class="text-xl font-bold text-on-surface font-headline mb-6">
-              {{ modalTitulo }}
-            </h2>
-
-            <!-- Form Categoria -->
-            <form v-if="modalTipo === 'categoria'" @submit.prevent="salvarCategoria" class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-on-surface-variant mb-2">Nome</label>
-                <Input v-model="categoriaForm.nome" required placeholder="Nome da categoria" />
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-on-surface-variant mb-2">Descrição</label>
-                <textarea
-                  v-model="categoriaForm.descricao"
-                  rows="3"
-                  class="w-full px-4 py-3 bg-surface-container-high rounded-lg text-on-surface placeholder:text-on-surface-variant/60 border-0 focus:ring-2 focus:ring-primary/40 transition-all"
-                  placeholder="Descrição opcional"
-                ></textarea>
-              </div>
-
-              <div class="flex justify-end gap-3 pt-4">
-                <Button type="button" variant="ghost" @click="fecharModal">Cancelar</Button>
-                <Button type="submit" variant="primary" :disabled="catalogoStore.loading">
-                  {{ modalModo === 'criar' ? 'Criar' : 'Salvar' }}
-                </Button>
-              </div>
-            </form>
-
-            <!-- Form Produto -->
-            <form v-else @submit.prevent="salvarProduto" class="space-y-4">
-              <div>
-                <label class="block text-sm font-medium text-on-surface-variant mb-2">Categoria</label>
-                <select
-                  v-model="produtoForm.categoria_id"
-                  required
-                  class="w-full px-4 py-3 bg-surface-container-high rounded-lg text-on-surface border-0 focus:ring-2 focus:ring-primary/40"
-                >
-                  <option value="" disabled>Selecione uma categoria</option>
-                  <option v-for="cat in catalogoStore.categorias" :key="cat.id" :value="cat.id">
-                    {{ cat.nome }}
-                  </option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-on-surface-variant mb-2">Nome</label>
-                <Input v-model="produtoForm.nome" required placeholder="Nome do produto" />
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-on-surface-variant mb-2">Tipo</label>
-                <select
-                  v-model="produtoForm.tipo"
-                  required
-                  class="w-full px-4 py-3 bg-surface-container-high rounded-lg text-on-surface border-0 focus:ring-2 focus:ring-primary/40"
-                >
-                  <option v-for="tipo in tiposProduto" :key="tipo.value" :value="tipo.value">
-                    {{ tipo.label }}
-                  </option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-on-surface-variant mb-2">Preço base (R$)</label>
-                <Input
-                  v-model.number="produtoForm.preco_base"
-                  type="number"
-                  step="0.01"
-                  min="0.01"
-                  required
-                  placeholder="0,00"
-                />
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-on-surface-variant mb-2">Descrição</label>
-                <textarea
-                  v-model="produtoForm.descricao"
-                  rows="3"
-                  class="w-full px-4 py-3 bg-surface-container-high rounded-lg text-on-surface placeholder:text-on-surface-variant/60 border-0 focus:ring-2 focus:ring-primary/40 transition-all"
-                  placeholder="Descrição opcional"
-                ></textarea>
-              </div>
-
-              <div class="flex justify-end gap-3 pt-4">
-                <Button type="button" variant="ghost" @click="fecharModal">Cancelar</Button>
-                <Button type="submit" variant="primary" :disabled="catalogoStore.loading">
-                  {{ modalModo === 'criar' ? 'Criar' : 'Salvar' }}
-                </Button>
-              </div>
-            </form>
-
-            <!-- Error -->
-            <p v-if="catalogoStore.error" class="text-error text-sm mt-4">
-              {{ catalogoStore.error }}
-            </p>
-          </div>
+    <!-- Modal Categoria/Produto -->
+    <Modal
+      :open="showModal"
+      :title="modalTitulo"
+      @update:open="showModal = $event"
+      @close="fecharModal"
+    >
+      <!-- Form Categoria -->
+      <form v-if="modalTipo === 'categoria'" @submit.prevent="salvarCategoria" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-2">Nome</label>
+          <Input v-model="categoriaForm.nome" required placeholder="Nome da categoria" />
         </div>
-      </div>
-    </Teleport>
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-2">Descrição</label>
+          <textarea
+            v-model="categoriaForm.descricao"
+            rows="3"
+            class="w-full px-4 py-3 bg-gray-100 rounded-lg text-gray-900 placeholder:text-gray-400 border-0 focus:ring-2 focus:ring-primary/40 transition-all"
+            placeholder="Descrição opcional"
+          ></textarea>
+        </div>
+
+        <!-- Error -->
+        <p v-if="catalogoStore.error" class="text-red-600 text-sm">
+          {{ catalogoStore.error }}
+        </p>
+      </form>
+
+      <!-- Form Produto -->
+      <form v-else @submit.prevent="salvarProduto" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-2">Categoria</label>
+          <select
+            v-model="produtoForm.categoria_id"
+            required
+            class="w-full px-4 py-3 bg-gray-100 rounded-lg text-gray-900 border-0 focus:ring-2 focus:ring-primary/40"
+          >
+            <option value="" disabled>Selecione uma categoria</option>
+            <option v-for="cat in catalogoStore.categorias" :key="cat.id" :value="cat.id">
+              {{ cat.nome }}
+            </option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-2">Nome</label>
+          <Input v-model="produtoForm.nome" required placeholder="Nome do produto" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-2">Tipo</label>
+          <select
+            v-model="produtoForm.tipo"
+            required
+            class="w-full px-4 py-3 bg-gray-100 rounded-lg text-gray-900 border-0 focus:ring-2 focus:ring-primary/40"
+          >
+            <option v-for="tipo in tiposProduto" :key="tipo.value" :value="tipo.value">
+              {{ tipo.label }}
+            </option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-2">Preço base (R$)</label>
+          <Input
+            v-model.number="produtoForm.preco_base"
+            type="number"
+            step="0.01"
+            min="0.01"
+            required
+            placeholder="0,00"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-600 mb-2">Descrição</label>
+          <textarea
+            v-model="produtoForm.descricao"
+            rows="3"
+            class="w-full px-4 py-3 bg-gray-100 rounded-lg text-gray-900 placeholder:text-gray-400 border-0 focus:ring-2 focus:ring-primary/40 transition-all"
+            placeholder="Descrição opcional"
+          ></textarea>
+        </div>
+
+        <!-- Error -->
+        <p v-if="catalogoStore.error" class="text-red-600 text-sm">
+          {{ catalogoStore.error }}
+        </p>
+      </form>
+
+      <template #footer>
+        <Button type="button" variant="ghost" @click="fecharModal">Cancelar</Button>
+        <Button
+          type="submit"
+          variant="primary"
+          :disabled="catalogoStore.loading"
+          @click="modalTipo === 'categoria' ? salvarCategoria() : salvarProduto()"
+        >
+          {{ modalModo === 'criar' ? 'Criar' : 'Salvar' }}
+        </Button>
+      </template>
+    </Modal>
   </AppLayout>
 </template>

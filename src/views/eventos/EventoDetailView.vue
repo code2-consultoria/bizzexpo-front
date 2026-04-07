@@ -4,6 +4,8 @@ import { useRoute, useRouter } from 'vue-router'
 import AppLayout from '@/components/layout/AppLayout.vue'
 import Spinner from '@/components/ui/Spinner.vue'
 import Drawer from '@/components/ui/Drawer.vue'
+import Modal from '@/components/ui/Modal.vue'
+import Button from '@/components/ui/Button.vue'
 import { useEventosStore } from '@/stores/eventos'
 import { useAuthStore } from '@/stores/auth'
 
@@ -507,74 +509,66 @@ function getStatusBadge(status: string) {
     </div>
 
     <!-- Modal Marcar como Pago -->
-    <Teleport to="body">
-      <div
-        v-if="showPagamentoModal"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
-        @click.self="showPagamentoModal = false"
-      >
-        <div class="bg-white rounded-xl shadow-xl w-full max-w-md">
-          <div class="p-6 border-b border-gray-100">
-            <h2 class="text-xl font-bold text-gray-900">Marcar evento como pago</h2>
-            <p class="text-sm text-gray-500 mt-1">
-              {{ eventosStore.eventoAtual?.nome }}
-            </p>
-          </div>
+    <Modal
+      :open="showPagamentoModal"
+      title="Marcar evento como pago"
+      :description="eventosStore.eventoAtual?.nome"
+      @update:open="showPagamentoModal = $event"
+      @close="showPagamentoModal = false"
+    >
+      <div class="space-y-4">
+        <div v-if="pagamentoError" class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+          {{ pagamentoError }}
+        </div>
 
-          <div class="p-6 space-y-4">
-            <div v-if="pagamentoError" class="p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
-              {{ pagamentoError }}
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">
-                Valor do pagamento *
-              </label>
-              <div class="relative">
-                <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">R$</span>
-                <input
-                  v-model="pagamentoForm.valor"
-                  type="text"
-                  inputmode="decimal"
-                  placeholder="0,00"
-                  class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
-                />
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">
-                Observação (opcional)
-              </label>
-              <textarea
-                v-model="pagamentoForm.observacao"
-                rows="3"
-                placeholder="Ex: Pagamento via transferência bancária"
-                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary resize-none"
-              ></textarea>
-            </div>
-          </div>
-
-          <div class="p-6 border-t border-gray-100 flex gap-3">
-            <button
-              @click="showPagamentoModal = false"
-              :disabled="pagamentoLoading"
-              class="flex-1 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
-            >
-              Cancelar
-            </button>
-            <button
-              @click="handleMarcarComoPago"
-              :disabled="pagamentoLoading"
-              class="flex-1 py-2 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
-            >
-              <Spinner v-if="pagamentoLoading" size="sm" />
-              <span v-else>Confirmar pagamento</span>
-            </button>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Valor do pagamento *
+          </label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">R$</span>
+            <input
+              v-model="pagamentoForm.valor"
+              type="text"
+              inputmode="decimal"
+              placeholder="0,00"
+              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+            />
           </div>
         </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Observação (opcional)
+          </label>
+          <textarea
+            v-model="pagamentoForm.observacao"
+            rows="3"
+            placeholder="Ex: Pagamento via transferência bancária"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary resize-none"
+          ></textarea>
+        </div>
       </div>
-    </Teleport>
+
+      <template #footer>
+        <Button
+          variant="ghost"
+          :disabled="pagamentoLoading"
+          @click="showPagamentoModal = false"
+        >
+          Cancelar
+        </Button>
+        <Button
+          variant="primary"
+          :disabled="pagamentoLoading"
+          class="bg-amber-500 hover:bg-amber-600"
+          @click="handleMarcarComoPago"
+        >
+          <Spinner v-if="pagamentoLoading" size="sm" class="mr-2" />
+          <span v-if="!pagamentoLoading">Confirmar pagamento</span>
+        </Button>
+      </template>
+    </Modal>
 
     <!-- Drawer de Detalhes da Fatura -->
     <Drawer
