@@ -225,7 +225,7 @@ function getStatusBadge(status: string) {
             </div>
 
             <!-- Botões de navegação -->
-            <div class="grid grid-cols-2 md:grid-cols-5 gap-3 pt-6 border-t border-gray-100">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-3 pt-6 border-t border-gray-100">
               <button
                 @click="router.push(`/eventos/${eventosStore.eventoAtual.id}/marketplace`)"
                 class="flex flex-col items-center gap-2 p-4 rounded-lg border border-primary/30 bg-primary/5 hover:border-primary hover:bg-primary/10 transition-colors"
@@ -270,6 +270,34 @@ function getStatusBadge(status: string) {
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                 </svg>
                 <span class="text-sm font-medium text-gray-700">Inscrições</span>
+              </button>
+              <button
+                @click="router.push(`/eventos/${eventosStore.eventoAtual.id}/stands`)"
+                class="flex flex-col items-center gap-2 p-4 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-colors"
+              >
+                <svg class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                </svg>
+                <span class="text-sm font-medium text-gray-700">Stands</span>
+              </button>
+              <button
+                @click="router.push(`/eventos/${eventosStore.eventoAtual.id}/espacos-ativacao`)"
+                class="flex flex-col items-center gap-2 p-4 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-colors"
+              >
+                <svg class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
+                </svg>
+                <span class="text-sm font-medium text-gray-700 text-center leading-tight">Espaços de Ativação</span>
+              </button>
+              <button
+                @click="router.push(`/eventos/${eventosStore.eventoAtual.id}/cotas-patrocinio`)"
+                class="flex flex-col items-center gap-2 p-4 rounded-lg border border-gray-200 hover:border-primary hover:bg-primary/5 transition-colors"
+              >
+                <svg class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-sm font-medium text-gray-700 text-center leading-tight">Cotas de Patrocínio</span>
               </button>
             </div>
           </div>
