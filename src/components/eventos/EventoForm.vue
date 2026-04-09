@@ -5,8 +5,9 @@ import Input from '@/components/ui/Input.vue'
 import FormField from '@/components/forms/FormField.vue'
 import PlanoSelector from '@/components/eventos/PlanoSelector.vue'
 import RichTextEditor from '@/components/ui/RichTextEditor.vue'
+import ColorPicker from '@/components/ui/ColorPicker.vue'
 import { useOrganizadorStore } from '@/stores/organizador'
-import type { PlanoEvento } from '@/types'
+import type { PlanoEvento, EventoCustomizacao } from '@/types'
 
 interface FormData {
   nome: string
@@ -17,6 +18,7 @@ interface FormData {
   local: string
   whatsapp_contato?: string
   plano?: PlanoEvento
+  customizacao?: EventoCustomizacao | null
 }
 
 const organizadorStore = useOrganizadorStore()
@@ -80,6 +82,19 @@ function copiarTelefoneOrganizador() {
   if (organizadorStore.organizador?.telefone) {
     form.value.whatsapp_contato = organizadorStore.organizador.telefone
   }
+}
+
+// Atualiza uma cor especifica da customizacao
+function atualizarCor(chave: keyof NonNullable<typeof form.value.customizacao>, valor: string | null) {
+  if (!form.value.customizacao) {
+    form.value.customizacao = {}
+  }
+  form.value.customizacao[chave] = valor
+}
+
+// Restaura cores padrao
+function restaurarCoresPadrao() {
+  form.value.customizacao = null
 }
 </script>
 
@@ -181,6 +196,55 @@ function copiarTelefoneOrganizador() {
         O plano não pode ser alterado pois a fatura já foi paga.
       </p>
     </FormField>
+
+    <!-- Personalizacao Visual (apenas em edicao) -->
+    <div v-if="isEdit" class="space-y-4 border-t pt-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h3 class="text-lg font-semibold text-gray-900">Personalizacao Visual</h3>
+          <p class="text-sm text-gray-500">Customize as cores da pagina publica do seu evento</p>
+        </div>
+        <button
+          type="button"
+          class="text-sm text-primary hover:underline"
+          @click="restaurarCoresPadrao"
+        >
+          Restaurar padrao
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <ColorPicker
+          :model-value="form.customizacao?.cor_primaria ?? null"
+          label="Cor Primaria"
+          :error="getError('customizacao.cor_primaria')"
+          @update:model-value="(v) => atualizarCor('cor_primaria', v)"
+        />
+
+        <ColorPicker
+          :model-value="form.customizacao?.cor_secundaria ?? null"
+          label="Cor Secundaria"
+          :error="getError('customizacao.cor_secundaria')"
+          @update:model-value="(v) => atualizarCor('cor_secundaria', v)"
+        />
+
+        <ColorPicker
+          :model-value="form.customizacao?.cor_fundo ?? null"
+          label="Cor de Fundo"
+          :error="getError('customizacao.cor_fundo')"
+          :presets="['#ffffff', '#f8fafc', '#f1f5f9', '#e2e8f0', '#1e293b', '#0f172a']"
+          @update:model-value="(v) => atualizarCor('cor_fundo', v)"
+        />
+
+        <ColorPicker
+          :model-value="form.customizacao?.cor_texto ?? null"
+          label="Cor do Texto"
+          :error="getError('customizacao.cor_texto')"
+          :presets="['#1e293b', '#334155', '#475569', '#64748b', '#ffffff', '#f8fafc']"
+          @update:model-value="(v) => atualizarCor('cor_texto', v)"
+        />
+      </div>
+    </div>
 
     <div class="flex justify-end gap-4">
       <Button type="button" variant="ghost" @click="emit('cancel')">Cancelar</Button>

@@ -16,6 +16,17 @@ const store = useEventoPublicoStore()
 
 const slug = computed(() => route.params.slug as string)
 
+// CSS Variables para cores customizadas do evento
+const cssVars = computed(() => {
+  const customizacao = store.evento?.customizacao
+  return {
+    '--evento-primary': customizacao?.cor_primaria || '#006b44',
+    '--evento-secondary': customizacao?.cor_secundaria || '#1EC6B6',
+    '--evento-bg': customizacao?.cor_fundo || '#ffffff',
+    '--evento-text': customizacao?.cor_texto || '#1e293b',
+  }
+})
+
 onMounted(async () => {
   await Promise.all([
     store.fetchEvento(slug.value),
@@ -56,8 +67,9 @@ onMounted(async () => {
 
     <!-- Evento carregado -->
     <template v-else-if="store.evento">
-      <!-- Hero -->
-      <HeroEvento :evento="store.evento" />
+      <div :style="cssVars">
+        <!-- Hero -->
+        <HeroEvento :evento="store.evento" />
 
       <!-- Barra de acoes flutuante -->
       <div class="sticky top-0 z-20 bg-white/95 backdrop-blur-sm border-b border-slate-200 py-3 px-4">
@@ -75,7 +87,8 @@ onMounted(async () => {
             <AdicionarCalendario :evento="store.evento" />
             <router-link
               :to="{ name: 'evento-inscricao', params: { slug: store.evento.slug } }"
-              class="inline-flex items-center justify-center bg-primary text-white h-10 px-5 rounded-lg font-medium text-sm"
+              class="inline-flex items-center justify-center h-10 px-5 rounded-lg font-medium text-sm text-white"
+              style="background-color: var(--evento-primary)"
             >
               Inscreva-se
             </router-link>
@@ -119,19 +132,20 @@ onMounted(async () => {
       </div>
 
       <!-- CTA Final -->
-      <section class="py-16 px-4 bg-primary">
+      <section class="py-16 px-4" style="background-color: var(--evento-primary)">
         <div class="max-w-2xl mx-auto text-center">
           <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">
             Garanta sua vaga!
           </h2>
           <p class="text-white/80 mb-8">
-            Faça sua inscrição agora e aproveite tudo que o {{ store.evento.nome }} tem a oferecer.
+            Faca sua inscricao agora e aproveite tudo que o {{ store.evento.nome }} tem a oferecer.
           </p>
           <router-link
             :to="{ name: 'evento-inscricao', params: { slug: store.evento.slug } }"
-            class="inline-flex items-center justify-center bg-white text-primary h-14 px-10 rounded-xl font-bold text-lg hover:bg-slate-50 transition-colors"
+            class="inline-flex items-center justify-center bg-white h-14 px-10 rounded-xl font-bold text-lg hover:bg-slate-50 transition-colors"
+            style="color: var(--evento-primary)"
           >
-            Fazer inscrição
+            Fazer inscricao
           </router-link>
         </div>
       </section>
@@ -149,10 +163,11 @@ onMounted(async () => {
         <div class="max-w-7xl mx-auto text-center">
           <p class="text-slate-400 text-sm">
             &copy; {{ new Date().getFullYear() }} {{ store.evento.nome }}. Powered by
-            <a href="/" class="text-primary hover:underline">BizzExpo</a>
+            <a href="/" class="hover:underline" style="color: var(--evento-primary)">BizzExpo</a>
           </p>
         </div>
       </footer>
+      </div>
     </template>
   </div>
 </template>

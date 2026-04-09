@@ -41,6 +41,13 @@ export interface Participante extends User {
 
 export type PlanoEvento = 'essencial' | 'profissional' | 'enterprise'
 
+export interface EventoCustomizacao {
+  cor_primaria?: string | null
+  cor_secundaria?: string | null
+  cor_fundo?: string | null
+  cor_texto?: string | null
+}
+
 export interface Evento {
   id: string
   organizador_id: string
@@ -53,6 +60,7 @@ export interface Evento {
   whatsapp_contato?: string
   logo?: string
   banner?: string
+  customizacao?: EventoCustomizacao | null
   status: 'rascunho' | 'publicado' | 'encerrado'
   plano?: PlanoEvento
   fatura_paga: boolean
@@ -318,6 +326,7 @@ export interface EventoPublico {
   whatsapp_contato?: string
   logo?: string
   banner?: string
+  customizacao?: EventoCustomizacao | null
   status: string
   categorias: Array<{
     id: string

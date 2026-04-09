@@ -78,7 +78,8 @@ const bannerUrl = computed(() => {
         <!-- Botão de inscrição -->
         <router-link
           :to="{ name: 'evento-inscricao', params: { slug: evento.slug } }"
-          class="inline-flex items-center justify-center bg-primary text-white h-14 px-10 rounded-xl font-bold text-lg shadow-lg shadow-primary/30 hover:scale-[1.02] transition-transform active:scale-95"
+          class="inline-flex items-center justify-center h-14 px-10 rounded-xl font-bold text-lg shadow-lg hover:scale-[1.02] transition-transform active:scale-95 text-white"
+          style="background-color: var(--evento-primary, #006b44); box-shadow: 0 10px 15px -3px color-mix(in srgb, var(--evento-primary, #006b44) 30%, transparent)"
         >
           Inscreva-se agora
           <svg class="w-5 h-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
