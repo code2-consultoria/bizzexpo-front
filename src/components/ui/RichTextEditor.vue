@@ -28,6 +28,7 @@ const emit = defineEmits<{
 const editorContainer = ref<HTMLElement | null>(null)
 let editor: EditorJS | null = null
 let isInternalChange = false
+let lastEmittedValue = ''
 
 // Tipos de bloco permitidos
 const ALLOWED_BLOCK_TYPES = ['paragraph', 'header', 'list', 'quote', 'delimiter']
@@ -90,6 +91,28 @@ function sanitizeEditorData(data: OutputData): OutputData {
   }
 }
 
+// Extrai apenas os blocos para comparacao (ignora time, version, ids)
+function extractBlocksForComparison(content: string): string {
+  if (!content) return ''
+  try {
+    const parsed = JSON.parse(content) as OutputData
+    if (!parsed.blocks) return ''
+    // Extrai apenas type e data de cada bloco, ignorando id
+    const blocksOnly = parsed.blocks.map((block) => ({
+      type: block.type,
+      data: block.data,
+    }))
+    return JSON.stringify(blocksOnly)
+  } catch {
+    return content
+  }
+}
+
+// Compara dois conteudos ignorando timestamps e ids
+function areContentsEqual(content1: string, content2: string): boolean {
+  return extractBlocksForComparison(content1) === extractBlocksForComparison(content2)
+}
+
 // Converte string JSON ou texto simples para dados do Editor.js
 function parseContent(content: string): OutputData {
   if (!content) {
@@ -141,6 +164,7 @@ async function initEditor() {
   if (!editorContainer.value || editor) return
 
   const initialData = parseContent(props.modelValue)
+  lastEmittedValue = props.modelValue
 
   editor = new EditorJS({
     holder: editorContainer.value,
@@ -183,6 +207,7 @@ async function initEditor() {
     onChange: async () => {
       if (isInternalChange) return
       const content = await serializeContent()
+      lastEmittedValue = content
       emit('update:modelValue', content)
     },
   })
@@ -196,18 +221,22 @@ watch(
   async (newValue) => {
     if (!editor) return
 
-    // Evita loop infinito
-    const currentContent = await serializeContent()
-    if (currentContent === newValue) return
+    // Se o novo valor e igual ao que acabamos de emitir, ignora
+    if (newValue === lastEmittedValue) return
+
+    // Compara conteudo ignorando timestamps e ids
+    if (areContentsEqual(newValue, lastEmittedValue)) return
 
     isInternalChange = true
     try {
       const data = parseContent(newValue)
       await editor.render(data)
+      lastEmittedValue = newValue
     } finally {
       isInternalChange = false
     }
-  }
+  },
+  { flush: 'post' }
 )
 
 onMounted(() => {

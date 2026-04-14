@@ -162,8 +162,11 @@ onMounted(async () => {
       <footer class="bg-slate-900 text-white py-8 px-4">
         <div class="max-w-7xl mx-auto text-center">
           <p class="text-slate-400 text-sm">
-            &copy; {{ new Date().getFullYear() }} {{ store.evento.nome }}. Powered by
-            <a href="/" class="hover:underline" style="color: var(--evento-primary)">BizzExpo</a>
+            &copy; {{ new Date().getFullYear() }} {{ store.evento.nome }}.
+            <a href="https://duevento.com.br" target="_blank" class="hover:underline" style="color: var(--evento-primary)">Duevento</a>
+          </p>
+          <p class="text-slate-500 text-xs mt-1">
+            Feito por <a href="https://code2.com.br" target="_blank" class="hover:underline">code2.com.br</a>
           </p>
         </div>
       </footer>

@@ -63,7 +63,7 @@ export const useCheckinStore = defineStore('checkin', () => {
     resultadosBusca.value = []
     try {
       const response = await api.get(`/eventos/${eventoId}/checkin/buscar`, {
-        params: { busca },
+        params: { q: busca },
       })
       resultadosBusca.value = response.data.data
       return response.data.data
