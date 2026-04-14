@@ -38,6 +38,8 @@ export const useStandsStore = defineStore('stands', () => {
       largura?: number
       profundidade?: number
       preco?: number
+      quantidade?: number
+      imagem?: string
     }
   ) {
     const response = await api.post(`/eventos/${eventoId}/stands`, data)
@@ -55,6 +57,8 @@ export const useStandsStore = defineStore('stands', () => {
       largura?: number
       profundidade?: number
       preco?: number
+      quantidade?: number
+      imagem?: string
     }
   ) {
     const response = await api.put(`/eventos/${eventoId}/stands/${standId}`, data)

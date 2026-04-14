@@ -224,6 +224,8 @@ export interface Stand {
   largura?: number
   profundidade?: number
   preco: number
+  quantidade: number
+  imagem?: string
   created_at?: string
   updated_at?: string
 }
@@ -237,6 +239,7 @@ export interface EspacoAtivacao {
   largura?: number
   profundidade?: number
   preco: number
+  imagem?: string
   created_at?: string
   updated_at?: string
 }

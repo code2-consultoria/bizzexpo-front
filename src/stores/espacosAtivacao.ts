@@ -38,6 +38,7 @@ export const useEspacosAtivacaoStore = defineStore('espacosAtivacao', () => {
       largura?: number
       profundidade?: number
       preco?: number
+      imagem?: string
     }
   ) {
     const response = await api.post(`/eventos/${eventoId}/espacos-ativacao`, data)
@@ -55,6 +56,7 @@ export const useEspacosAtivacaoStore = defineStore('espacosAtivacao', () => {
       largura?: number
       profundidade?: number
       preco?: number
+      imagem?: string
     }
   ) {
     const response = await api.put(`/eventos/${eventoId}/espacos-ativacao/${espacoId}`, data)

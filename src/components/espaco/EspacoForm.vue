@@ -3,6 +3,7 @@ import { ref, onMounted, computed } from 'vue'
 import type { Stand, EspacoAtivacao } from '@/types'
 import Input from '@/components/ui/Input.vue'
 import Button from '@/components/ui/Button.vue'
+import ImageUpload from '@/components/ui/ImageUpload.vue'
 
 interface Props {
   tipo: 'stand' | 'espacoAtivacao'
@@ -20,6 +21,8 @@ const emit = defineEmits<{
       largura?: number
       profundidade?: number
       preco?: number
+      quantidade?: number
+      imagem?: string
     },
   ]
   cancel: []
@@ -31,6 +34,8 @@ const localizacao = ref('')
 const largura = ref<number | undefined>(undefined)
 const profundidade = ref<number | undefined>(undefined)
 const preco = ref<number>(0)
+const quantidade = ref<number>(1)
+const imagem = ref<string | undefined>(undefined)
 
 const labels = computed(() => {
   if (props.tipo === 'stand') {
@@ -55,18 +60,40 @@ onMounted(() => {
     largura.value = props.espaco.largura
     profundidade.value = props.espaco.profundidade
     preco.value = props.espaco.preco
+    imagem.value = props.espaco.imagem
+    // Quantidade so existe em Stand
+    if (props.tipo === 'stand' && 'quantidade' in props.espaco) {
+      quantidade.value = (props.espaco as Stand).quantidade || 1
+    }
   }
 })
 
 function handleSubmit() {
-  emit('submit', {
+  const data: {
+    nome: string
+    descricao?: string
+    localizacao?: string
+    largura?: number
+    profundidade?: number
+    preco?: number
+    quantidade?: number
+    imagem?: string
+  } = {
     nome: nome.value,
     descricao: descricao.value || undefined,
     localizacao: localizacao.value || undefined,
     largura: largura.value || undefined,
     profundidade: profundidade.value || undefined,
     preco: preco.value,
-  })
+    imagem: imagem.value,
+  }
+
+  // Quantidade so para Stand
+  if (props.tipo === 'stand') {
+    data.quantidade = quantidade.value
+  }
+
+  emit('submit', data)
 }
 </script>
 
@@ -135,18 +162,33 @@ function handleSubmit() {
       </div>
     </div>
 
-    <div>
-      <label for="preco" class="block text-sm font-medium text-gray-700">Preço (R$)</label>
-      <Input
-        id="preco"
-        v-model.number="preco"
-        type="number"
-        step="0.01"
-        min="0"
-        placeholder="0.00"
-        class="mt-1"
-      />
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label for="preco" class="block text-sm font-medium text-gray-700">Preço (R$)</label>
+        <Input
+          id="preco"
+          v-model.number="preco"
+          type="number"
+          step="0.01"
+          min="0"
+          placeholder="0.00"
+          class="mt-1"
+        />
+      </div>
+      <div v-if="tipo === 'stand'">
+        <label for="quantidade" class="block text-sm font-medium text-gray-700">Quantidade</label>
+        <Input
+          id="quantidade"
+          v-model.number="quantidade"
+          type="number"
+          min="1"
+          placeholder="1"
+          class="mt-1"
+        />
+      </div>
     </div>
+
+    <ImageUpload v-model="imagem" label="Imagem" />
 
     <div class="flex gap-3">
       <Button type="submit" :loading="loading">
