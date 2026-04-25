@@ -251,7 +251,7 @@ function getStatusBadge(status: string) {
                 <svg class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
                 </svg>
-                <span class="text-sm font-medium text-gray-700 text-center leading-tight">Categorias de Ticket</span>
+                <span class="text-sm font-medium text-gray-700 text-center leading-tight">Categorias de ticket</span>
               </button>
               <button
                 @click="router.push(`/eventos/${eventosStore.eventoAtual.id}/staff`)"
@@ -288,7 +288,7 @@ function getStatusBadge(status: string) {
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
                 </svg>
-                <span class="text-sm font-medium text-gray-700 text-center leading-tight">Espaços de Ativação</span>
+                <span class="text-sm font-medium text-gray-700 text-center leading-tight">Espaços de ativação</span>
               </button>
               <button
                 @click="router.push(`/eventos/${eventosStore.eventoAtual.id}/cotas-patrocinio`)"
@@ -297,7 +297,7 @@ function getStatusBadge(status: string) {
                 <svg class="w-6 h-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span class="text-sm font-medium text-gray-700 text-center leading-tight">Cotas de Patrocínio</span>
+                <span class="text-sm font-medium text-gray-700 text-center leading-tight">Cotas de patrocínio</span>
               </button>
             </div>
           </div>

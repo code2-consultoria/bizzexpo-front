@@ -166,7 +166,7 @@ function restaurarCoresPadrao() {
         </button>
       </div>
       <p class="mt-1 text-xs text-gray-500">
-        Este numero sera exibido como botao de contato na pagina publica do evento.
+        Este número será exibido como botão de contato na página pública do evento.
       </p>
     </FormField>
 
@@ -197,19 +197,19 @@ function restaurarCoresPadrao() {
       </p>
     </FormField>
 
-    <!-- Personalizacao Visual (apenas em edicao) -->
+    <!-- Personalização visual (apenas em edição) -->
     <div v-if="isEdit" class="space-y-4 border-t pt-6">
       <div class="flex items-center justify-between">
         <div>
-          <h3 class="text-lg font-semibold text-gray-900">Personalizacao Visual</h3>
-          <p class="text-sm text-gray-500">Customize as cores da pagina publica do seu evento</p>
+          <h3 class="text-lg font-semibold text-gray-900">Personalização visual</h3>
+          <p class="text-sm text-gray-500">Customize as cores da página pública do seu evento</p>
         </div>
         <button
           type="button"
           class="text-sm text-primary hover:underline"
           @click="restaurarCoresPadrao"
         >
-          Restaurar padrao
+          Restaurar padrão
         </button>
       </div>
 

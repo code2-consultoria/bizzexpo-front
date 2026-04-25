@@ -26,7 +26,7 @@ const formatCurrency = (value: number) => {
     <div class="flex items-start justify-between">
       <div class="flex-1">
         <span class="inline-block px-2 py-0.5 text-xs font-medium rounded-full mb-2 bg-yellow-100 text-yellow-800">
-          Cota de Patrocínio
+          Cota de patrocínio
         </span>
         <h3 class="font-semibold text-gray-900">{{ cota.nome }}</h3>
         <p v-if="cota.descricao" class="text-sm text-gray-500 mt-1 line-clamp-2">

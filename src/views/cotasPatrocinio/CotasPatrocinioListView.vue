@@ -52,7 +52,7 @@ async function handleDelete(id: string) {
           Voltar
         </Button>
         <h1 class="text-2xl font-bold text-gray-900 mt-2">
-          Cotas de Patrocínio
+          Cotas de patrocínio
           <span v-if="eventosStore.eventoAtual" class="text-gray-500 font-normal">
             - {{ eventosStore.eventoAtual.nome }}
           </span>

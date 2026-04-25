@@ -36,7 +36,7 @@ const dataHoraFormatada = computed(() => {
 <template>
   <div>
     <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-8">
-      Quando e Onde
+      Quando e onde
     </h2>
 
     <div class="grid md:grid-cols-2 gap-6">
@@ -49,12 +49,12 @@ const dataHoraFormatada = computed(() => {
             </svg>
           </div>
           <div>
-            <h3 class="font-semibold text-slate-900 mb-2">Data e Horario</h3>
+            <h3 class="font-semibold text-slate-900 mb-2">Data e horário</h3>
             <p class="text-slate-600 text-sm mb-1">
-              <span class="font-medium">Inicio:</span> {{ dataHoraFormatada.inicio }}
+              <span class="font-medium">Início:</span> {{ dataHoraFormatada.inicio }}
             </p>
             <p class="text-slate-600 text-sm">
-              <span class="font-medium">Termino:</span> {{ dataHoraFormatada.fim }}
+              <span class="font-medium">Término:</span> {{ dataHoraFormatada.fim }}
             </p>
           </div>
         </div>

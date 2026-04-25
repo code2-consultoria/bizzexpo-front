@@ -15,9 +15,9 @@ const router = useRouter()
 
       <!-- Menu -->
       <div class="hidden md:flex items-center gap-8">
-        <a href="#inicio" class="text-gray-600 hover:text-primary font-medium text-sm transition-colors">Inicio</a>
-        <a href="#solucoes" class="text-gray-600 hover:text-primary font-medium text-sm transition-colors">Solucoes</a>
-        <a href="#precos" class="text-gray-600 hover:text-primary font-medium text-sm transition-colors">Precos</a>
+        <a href="#inicio" class="text-gray-600 hover:text-primary font-medium text-sm transition-colors">Início</a>
+        <a href="#solucoes" class="text-gray-600 hover:text-primary font-medium text-sm transition-colors">Soluções</a>
+        <a href="#precos" class="text-gray-600 hover:text-primary font-medium text-sm transition-colors">Preços</a>
         <a href="#contato" class="text-gray-600 hover:text-primary font-medium text-sm transition-colors">Contato</a>
       </div>
 

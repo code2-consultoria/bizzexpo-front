@@ -20,10 +20,10 @@ defineProps<Props>()
       class="prose prose-slate max-w-none text-slate-600 leading-relaxed"
     />
 
-    <!-- Categorias disponiveis -->
+    <!-- Categorias disponíveis -->
     <div v-if="evento.categorias.length > 0" class="mt-10">
       <h3 class="text-lg font-semibold text-slate-900 mb-4">
-        Categorias de Participacao
+        Categorias de participação
       </h3>
       <div class="flex flex-wrap gap-2">
         <span

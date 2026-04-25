@@ -52,13 +52,13 @@ async function handleDelete(id: string) {
           Voltar
         </Button>
         <h1 class="text-2xl font-bold text-gray-900 mt-2">
-          Categorias de Ticket
+          Categorias de ticket
           <span v-if="eventosStore.eventoAtual" class="text-gray-500 font-normal">
             - {{ eventosStore.eventoAtual.nome }}
           </span>
         </h1>
         <p class="text-gray-500 mt-1 text-sm">
-          Todos os tickets cadastrados aqui serao apresentados na pagina do evento
+          Todos os tickets cadastrados aqui serão apresentados na página do evento
         </p>
       </div>
       <Button @click="router.push(`/eventos/${eventoId}/categorias/criar`)">

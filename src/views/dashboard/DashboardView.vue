@@ -73,7 +73,7 @@ function getStatusBadge(status: string) {
     <div v-else class="space-y-6">
       <!-- Cards de métricas -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Total de Eventos -->
+        <!-- Total de eventos -->
         <div class="bg-white rounded-xl border border-gray-200 p-6 flex items-center gap-4">
           <div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
             <svg class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -81,12 +81,12 @@ function getStatusBadge(status: string) {
             </svg>
           </div>
           <div>
-            <p class="text-sm text-gray-500">Total de Eventos</p>
+            <p class="text-sm text-gray-500">Total de eventos</p>
             <p class="text-2xl font-bold text-gray-900">{{ metricas.total_eventos }}</p>
           </div>
         </div>
 
-        <!-- Eventos Ativos -->
+        <!-- Eventos ativos -->
         <div class="bg-white rounded-xl border border-gray-200 p-6 flex items-center gap-4">
           <div class="w-12 h-12 rounded-lg bg-cyan-100 flex items-center justify-center">
             <svg class="w-6 h-6 text-cyan-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -94,12 +94,12 @@ function getStatusBadge(status: string) {
             </svg>
           </div>
           <div>
-            <p class="text-sm text-gray-500">Eventos Ativos</p>
+            <p class="text-sm text-gray-500">Eventos ativos</p>
             <p class="text-2xl font-bold text-gray-900">{{ metricas.eventos_ativos }}</p>
           </div>
         </div>
 
-        <!-- Total de Expositores -->
+        <!-- Total de expositores -->
         <div class="bg-white rounded-xl border border-gray-200 p-6 flex items-center gap-4">
           <div class="w-12 h-12 rounded-lg bg-amber-100 flex items-center justify-center">
             <svg class="w-6 h-6 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -107,7 +107,7 @@ function getStatusBadge(status: string) {
             </svg>
           </div>
           <div>
-            <p class="text-sm text-gray-500">Total de Expositores</p>
+            <p class="text-sm text-gray-500">Total de expositores</p>
             <p class="text-2xl font-bold text-gray-900">{{ metricas.total_expositores }}</p>
           </div>
         </div>

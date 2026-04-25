@@ -15,7 +15,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  placeholder: 'Selecione uma opcao',
+  placeholder: 'Selecione uma opção',
   disabled: false,
 })
 

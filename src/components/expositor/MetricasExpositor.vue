@@ -31,7 +31,7 @@ const getInteresseColor = (nivel: string) => {
             </svg>
           </div>
           <div>
-            <p class="text-sm text-slate-500">Total de Leads</p>
+            <p class="text-sm text-slate-500">Total de leads</p>
             <p class="text-3xl font-bold text-slate-900">{{ dashboard.metricas.total_leads }}</p>
           </div>
         </div>
@@ -46,7 +46,7 @@ const getInteresseColor = (nivel: string) => {
             </svg>
           </div>
           <div>
-            <p class="text-sm text-slate-500">Leads Hoje</p>
+            <p class="text-sm text-slate-500">Leads hoje</p>
             <p class="text-3xl font-bold text-slate-900">{{ dashboard.metricas.leads_hoje }}</p>
           </div>
         </div>
@@ -68,9 +68,9 @@ const getInteresseColor = (nivel: string) => {
       </div>
     </div>
 
-    <!-- Distribuicao por nivel de interesse -->
+    <!-- Distribuição por nível de interesse -->
     <div class="bg-white rounded-xl border border-slate-200 p-6">
-      <h3 class="text-lg font-semibold text-slate-900 mb-4">Leads por Nivel de Interesse</h3>
+      <h3 class="text-lg font-semibold text-slate-900 mb-4">Leads por nível de interesse</h3>
 
       <div class="space-y-4">
         <div

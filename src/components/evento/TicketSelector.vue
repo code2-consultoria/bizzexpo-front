@@ -59,7 +59,7 @@ function irParaInscricao() {
       query: { categoria: categoriaId },
     })
   } else {
-    // Se tiver varias, vai para a pagina de inscricao geral
+    // Se tiver várias, vai para a página de inscrição geral
     router.push({
       name: 'evento-inscricao',
       params: { slug: props.eventoSlug },

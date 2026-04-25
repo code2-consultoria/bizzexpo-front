@@ -12,10 +12,10 @@ defineProps<Props>()
   <div class="bg-slate-50 rounded-2xl p-6 lg:p-8">
     <div class="text-center mb-8">
       <h2 class="text-2xl md:text-3xl font-bold text-slate-900 mb-3">
-        Expositores Confirmados
+        Expositores confirmados
       </h2>
       <p class="text-slate-600">
-        Conhea as empresas e marcas que estarao presentes no evento
+        Conheça as empresas e marcas que estarão presentes no evento
       </p>
     </div>
 

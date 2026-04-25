@@ -12,7 +12,7 @@ defineProps<Props>()
 
 <template>
   <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-    <h3 class="text-lg font-semibold text-gray-900 mb-4">Ranking de Expositores</h3>
+    <h3 class="text-lg font-semibold text-gray-900 mb-4">Ranking de expositores</h3>
 
     <div v-if="loading" class="flex items-center justify-center h-32">
       <Spinner />
