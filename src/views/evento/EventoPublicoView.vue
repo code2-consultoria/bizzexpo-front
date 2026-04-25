@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import { useEventoPublicoStore } from '@/stores/eventoPublico'
 import HeroEvento from '@/components/evento/HeroEvento.vue'
 import SobreEvento from '@/components/evento/SobreEvento.vue'
-import ExpositoresGrid from '@/components/evento/ExpositoresGrid.vue'
+import ExpositoresCarrossel from '@/components/evento/ExpositoresCarrossel.vue'
 import LocalizacaoEvento from '@/components/evento/LocalizacaoEvento.vue'
 import AdicionarCalendario from '@/components/evento/AdicionarCalendario.vue'
 import TicketSelector from '@/components/evento/TicketSelector.vue'
@@ -112,8 +112,12 @@ onMounted(async () => {
               />
             </div>
 
-            <!-- Expositores -->
-            <ExpositoresGrid :expositores="store.expositores" class="mb-12" />
+            <!-- Expositores (oculta se nao houver expositores) -->
+            <ExpositoresCarrossel
+              v-if="store.expositores.length > 0"
+              :expositores="store.expositores"
+              class="mb-12"
+            />
 
             <!-- Localizacao -->
             <LocalizacaoEvento :evento="store.evento" />

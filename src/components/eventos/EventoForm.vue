@@ -6,6 +6,7 @@ import FormField from '@/components/forms/FormField.vue'
 import PlanoSelector from '@/components/eventos/PlanoSelector.vue'
 import RichTextEditor from '@/components/ui/RichTextEditor.vue'
 import ColorPicker from '@/components/ui/ColorPicker.vue'
+import ImageUpload from '@/components/ui/ImageUpload.vue'
 import { useOrganizadorStore } from '@/stores/organizador'
 import type { PlanoEvento, EventoCustomizacao } from '@/types'
 
@@ -18,6 +19,8 @@ interface FormData {
   local: string
   whatsapp_contato?: string
   plano?: PlanoEvento
+  banner?: string
+  og_image?: string
   customizacao?: EventoCustomizacao | null
 }
 
@@ -196,6 +199,38 @@ function restaurarCoresPadrao() {
         O plano não pode ser alterado pois a fatura já foi paga.
       </p>
     </FormField>
+
+    <!-- Imagens do Evento (apenas em edição) -->
+    <div v-if="isEdit" class="space-y-4 border-t pt-6">
+      <div>
+        <h3 class="text-lg font-semibold text-gray-900">Imagens do Evento</h3>
+        <p class="text-sm text-gray-500">Adicione imagens para personalizar a página e divulgação do evento</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <FormField label="Banner do Evento" id="banner" :error="getError('banner')">
+          <ImageUpload
+            v-model="form.banner"
+            label=""
+            :max-size="5"
+          />
+          <p class="mt-1 text-xs text-gray-500">
+            Recomendado: 1920x600px. Exibido no topo da página do evento.
+          </p>
+        </FormField>
+
+        <FormField label="Imagem de Divulgação (SEO)" id="og_image" :error="getError('og_image')">
+          <ImageUpload
+            v-model="form.og_image"
+            label=""
+            :max-size="2"
+          />
+          <p class="mt-1 text-xs text-gray-500">
+            Recomendado: 1200x630px. Exibida em cards do WhatsApp, Facebook e LinkedIn.
+          </p>
+        </FormField>
+      </div>
+    </div>
 
     <!-- Personalização visual (apenas em edição) -->
     <div v-if="isEdit" class="space-y-4 border-t pt-6">

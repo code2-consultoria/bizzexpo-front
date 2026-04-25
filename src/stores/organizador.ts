@@ -35,6 +35,7 @@ export const useOrganizadorStore = defineStore('organizador', () => {
     empresa?: string
     cnpj?: string
     cargo?: string
+    logo?: string
   }) {
     const response = await api.put('/organizador', data)
     organizador.value = response.data.data

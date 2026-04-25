@@ -2,6 +2,7 @@
 import Button from '@/components/ui/Button.vue'
 import Input from '@/components/ui/Input.vue'
 import FormField from '@/components/forms/FormField.vue'
+import ImageUpload from '@/components/ui/ImageUpload.vue'
 
 interface FormData {
   nome_empresa: string
@@ -11,6 +12,7 @@ interface FormData {
   telefone: string
   site: string
   descricao: string
+  logo?: string
 }
 
 interface Props {
@@ -105,6 +107,17 @@ function getError(field: string): string | undefined {
         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors border-gray-300"
         placeholder="Descrição da empresa"
       />
+    </FormField>
+
+    <FormField label="Logo da Empresa" id="logo" :error="getError('logo')">
+      <ImageUpload
+        v-model="form.logo"
+        label=""
+        :max-size="2"
+      />
+      <p class="mt-1 text-xs text-gray-500">
+        Recomendado: 1024x1024px. Será exibida no carrossel de expositores.
+      </p>
     </FormField>
 
     <div class="flex justify-end gap-4">

@@ -6,6 +6,7 @@ import Card from '@/components/ui/Card.vue'
 import Button from '@/components/ui/Button.vue'
 import Input from '@/components/ui/Input.vue'
 import FormField from '@/components/forms/FormField.vue'
+import ImageUpload from '@/components/ui/ImageUpload.vue'
 import Spinner from '@/components/ui/Spinner.vue'
 import { useForm } from '@/composables/useForm'
 import { useAuthStore } from '@/stores/auth'
@@ -19,6 +20,7 @@ const { form, loading, generalError, getError, submit } = useForm({
   empresa: '',
   cnpj: '',
   cargo: '',
+  logo: undefined as string | undefined,
 })
 
 const successMessage = ref<string | null>(null)
@@ -29,6 +31,7 @@ function populateForm() {
     form.empresa = organizadorStore.organizador.empresa || ''
     form.cnpj = organizadorStore.organizador.cnpj || ''
     form.cargo = organizadorStore.organizador.cargo || ''
+    form.logo = organizadorStore.organizador.logo || undefined
   }
 }
 
@@ -176,6 +179,17 @@ function formatTelefone(event: Event) {
                 />
               </FormField>
             </div>
+
+            <FormField label="Logo da Empresa" id="logo" :error="getError('logo')">
+              <ImageUpload
+                v-model="form.logo"
+                label=""
+                :max-size="2"
+              />
+              <p class="mt-1 text-xs text-gray-500">
+                Recomendado: 512x512px. Sua logo aparecera em todos os seus eventos.
+              </p>
+            </FormField>
 
             <div class="flex justify-end pt-4">
               <Button type="submit" :loading="loading">Salvar alterações</Button>

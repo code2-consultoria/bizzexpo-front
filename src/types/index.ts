@@ -15,6 +15,7 @@ export interface Organizador {
   empresa: string
   cnpj: string
   cargo?: string
+  logo?: string
   created_at: string
   updated_at: string
 }
@@ -60,6 +61,7 @@ export interface Evento {
   whatsapp_contato?: string
   logo?: string
   banner?: string
+  og_image?: string
   customizacao?: EventoCustomizacao | null
   status: 'rascunho' | 'publicado' | 'encerrado'
   plano?: PlanoEvento
@@ -329,6 +331,7 @@ export interface EventoPublico {
   whatsapp_contato?: string
   logo?: string
   banner?: string
+  og_image?: string
   customizacao?: EventoCustomizacao | null
   status: string
   categorias: Array<{
