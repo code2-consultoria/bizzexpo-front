@@ -62,7 +62,7 @@ export function useBuscaDocumento() {
 
     let soma = 0
     for (let i = 0; i < 12; i++) {
-      soma += parseInt(cnpj.charAt(i)) * multiplicadores1[i]
+      soma += parseInt(cnpj.charAt(i)) * (multiplicadores1[i] ?? 0)
     }
     let resto = soma % 11
     const digito1 = resto < 2 ? 0 : 11 - resto
@@ -70,7 +70,7 @@ export function useBuscaDocumento() {
 
     soma = 0
     for (let i = 0; i < 13; i++) {
-      soma += parseInt(cnpj.charAt(i)) * multiplicadores2[i]
+      soma += parseInt(cnpj.charAt(i)) * (multiplicadores2[i] ?? 0)
     }
     resto = soma % 11
     const digito2 = resto < 2 ? 0 : 11 - resto
@@ -105,8 +105,9 @@ export function useBuscaDocumento() {
       }
 
       return false
-    } catch (error: any) {
-      if (error.response?.status === 404) {
+    } catch (error: unknown) {
+      const axiosError = error as { response?: { status?: number } }
+      if (axiosError.response?.status === 404) {
         return false
       }
       erro.value = 'Erro ao buscar pessoa na base local'
@@ -131,13 +132,14 @@ export function useBuscaDocumento() {
       dadosReceita.value = response.data.data
       estado.value = 'encontrado_receita'
       return true
-    } catch (error: any) {
-      if (error.response?.status === 404) {
+    } catch (error: unknown) {
+      const axiosError = error as { response?: { status?: number } }
+      if (axiosError.response?.status === 404) {
         erro.value = 'CNPJ não encontrado na Receita Federal'
         estado.value = 'erro_receita'
         return false
       }
-      if (error.response?.status === 503) {
+      if (axiosError.response?.status === 503) {
         erro.value = 'Serviço de consulta temporariamente indisponível'
         estado.value = 'erro_receita'
         return false
