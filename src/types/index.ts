@@ -466,3 +466,35 @@ export interface PaginatedResponse<T> {
     to: number
   }
 }
+
+// Dados da Receita Federal (Brasil API)
+export interface DadosReceita {
+  cnpj: string
+  razao_social: string
+  nome_fantasia: string | null
+  situacao_cadastral: string
+  endereco: {
+    logradouro: string | null
+    numero: string | null
+    complemento: string | null
+    bairro: string | null
+    municipio: string | null
+    uf: string | null
+    cep: string | null
+  }
+  telefone: string | null
+  email: string | null
+}
+
+// Pessoa (para busca por documento)
+export interface Pessoa {
+  id: string
+  nome: string
+  documento: string
+  tipo_documento: 'cpf' | 'cnpj'
+  email?: string
+  telefone?: string
+}
+
+// Tipo de documento para seleção
+export type TipoDocumento = 'cpf' | 'cnpj'

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import api from '@/services/api'
-import type { Expositor } from '@/types'
+import type { Expositor, Pessoa, DadosReceita } from '@/types'
 
 export const useExpositoresStore = defineStore('expositores', () => {
   const expositores = ref<Expositor[]>([])
@@ -75,6 +75,34 @@ export const useExpositoresStore = defineStore('expositores', () => {
     expositores.value = expositores.value.filter((e) => e.id !== expositorId)
   }
 
+  async function buscarPessoa(documento: string): Promise<Pessoa | null> {
+    try {
+      const response = await api.get('/pessoas/buscar', {
+        params: { documento }
+      })
+      return response.data.data || null
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        return null
+      }
+      throw error
+    }
+  }
+
+  async function consultarCnpj(cnpj: string): Promise<DadosReceita | null> {
+    try {
+      const response = await api.get('/cnpj/consultar', {
+        params: { cnpj }
+      })
+      return response.data.data || null
+    } catch (error: any) {
+      if (error.response?.status === 404) {
+        return null
+      }
+      throw error
+    }
+  }
+
   return {
     expositores,
     expositorAtual,
@@ -84,5 +112,7 @@ export const useExpositoresStore = defineStore('expositores', () => {
     createExpositor,
     updateExpositor,
     deleteExpositor,
+    buscarPessoa,
+    consultarCnpj,
   }
 })

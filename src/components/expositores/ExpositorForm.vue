@@ -19,6 +19,8 @@ interface Props {
   loading?: boolean
   errors?: Record<string, string[]>
   submitLabel?: string
+  modo?: 'criar' | 'editar' | 'confirmar'
+  camposReadOnly?: string[]
 }
 
 const form = defineModel<FormData>('form', { required: true })
@@ -27,7 +29,13 @@ const props = withDefaults(defineProps<Props>(), {
   loading: false,
   errors: () => ({}),
   submitLabel: 'Salvar',
+  modo: 'criar',
+  camposReadOnly: () => ([]),
 })
+
+function isReadOnly(campo: string): boolean {
+  return props.camposReadOnly.includes(campo)
+}
 
 const emit = defineEmits<{
   (e: 'submit'): void
@@ -48,6 +56,7 @@ function getError(field: string): string | undefined {
           v-model="form.nome_empresa"
           placeholder="Nome da empresa"
           :error="getError('nome_empresa')"
+          :disabled="isReadOnly('nome_empresa')"
         />
       </FormField>
 
@@ -57,6 +66,7 @@ function getError(field: string): string | undefined {
           v-model="form.cnpj"
           placeholder="00.000.000/0000-00"
           :error="getError('cnpj')"
+          :disabled="isReadOnly('cnpj')"
         />
       </FormField>
 
@@ -66,6 +76,7 @@ function getError(field: string): string | undefined {
           v-model="form.nome_contato"
           placeholder="Nome do responsável"
           :error="getError('nome_contato')"
+          :disabled="isReadOnly('nome_contato')"
         />
       </FormField>
 
@@ -76,6 +87,7 @@ function getError(field: string): string | undefined {
           type="email"
           placeholder="email@empresa.com"
           :error="getError('email_contato')"
+          :disabled="isReadOnly('email_contato')"
         />
       </FormField>
 
@@ -85,6 +97,7 @@ function getError(field: string): string | undefined {
           v-model="form.telefone"
           placeholder="(00) 00000-0000"
           :error="getError('telefone')"
+          :disabled="isReadOnly('telefone')"
         />
       </FormField>
 
@@ -95,6 +108,7 @@ function getError(field: string): string | undefined {
           type="url"
           placeholder="https://empresa.com"
           :error="getError('site')"
+          :disabled="isReadOnly('site')"
         />
       </FormField>
     </div>
@@ -104,8 +118,9 @@ function getError(field: string): string | undefined {
         id="descricao"
         v-model="form.descricao"
         rows="3"
-        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors border-gray-300"
+        class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed"
         placeholder="Descrição da empresa"
+        :disabled="isReadOnly('descricao')"
       />
     </FormField>
 
