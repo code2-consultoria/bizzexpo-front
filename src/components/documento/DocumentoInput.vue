@@ -22,13 +22,6 @@ const emit = defineEmits<{
 
 const debounceTimer = ref<ReturnType<typeof setTimeout> | null>(null)
 
-const mascara = computed(() => {
-  if (props.tipo === 'cpf') {
-    return '###.###.###-##'
-  }
-  return '##.###.###/####-##'
-})
-
 const placeholder = computed(() => {
   if (props.tipo === 'cpf') {
     return '000.000.000-00'
