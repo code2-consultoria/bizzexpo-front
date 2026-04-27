@@ -25,10 +25,14 @@ const dragover = ref(false)
 
 const previewUrl = computed(() => {
   if (!props.modelValue) return null
-  // Se for URL completa, usa direto
-  if (props.modelValue.startsWith('http')) return props.modelValue
+  // Se for URL completa ou Data URI, usa direto
+  if (props.modelValue.startsWith('http') || props.modelValue.startsWith('data:')) {
+    return props.modelValue
+  }
   // Se for path relativo, monta URL do storage
-  return `${import.meta.env.VITE_API_URL}/storage/${props.modelValue}`
+  // Remove /api do final se existir, pois storage fica na raiz
+  const baseUrl = import.meta.env.VITE_API_URL?.replace(/\/api\/?$/, '') || ''
+  return `${baseUrl}/storage/${props.modelValue}`
 })
 
 async function handleFileSelect(event: Event) {
