@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import Button from '@/components/ui/Button.vue'
 import Input from '@/components/ui/Input.vue'
 import FormField from '@/components/forms/FormField.vue'
@@ -21,6 +22,7 @@ interface Props {
   submitLabel?: string
   modo?: 'criar' | 'editar' | 'confirmar'
   camposReadOnly?: string[]
+  tipoPessoa?: 'pf' | 'pj'
 }
 
 const form = defineModel<FormData>('form', { required: true })
@@ -31,7 +33,15 @@ const props = withDefaults(defineProps<Props>(), {
   submitLabel: 'Salvar',
   modo: 'criar',
   camposReadOnly: () => ([]),
+  tipoPessoa: 'pj',
 })
+
+const labelNome = computed(() => props.tipoPessoa === 'pf' ? 'Nome' : 'Nome da Empresa')
+const placeholderNome = computed(() => props.tipoPessoa === 'pf' ? 'Nome completo' : 'Nome da empresa')
+const labelDocumento = computed(() => props.tipoPessoa === 'pf' ? 'CPF' : 'CNPJ')
+const placeholderDocumento = computed(() => props.tipoPessoa === 'pf' ? '000.000.000-00' : '00.000.000/0000-00')
+const labelLogo = computed(() => props.tipoPessoa === 'pf' ? 'Foto' : 'Logo da Empresa')
+const placeholderDescricao = computed(() => props.tipoPessoa === 'pf' ? 'Descrição' : 'Descrição da empresa')
 
 function isReadOnly(campo: string): boolean {
   return props.camposReadOnly.includes(campo)
@@ -50,21 +60,21 @@ function getError(field: string): string | undefined {
 <template>
   <form class="space-y-6" @submit.prevent="emit('submit')">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <FormField label="Nome da Empresa" id="nome_empresa" :error="getError('nome_empresa')" required>
+      <FormField :label="labelNome" id="nome_empresa" :error="getError('nome_empresa')" required>
         <Input
           id="nome_empresa"
           v-model="form.nome_empresa"
-          placeholder="Nome da empresa"
+          :placeholder="placeholderNome"
           :error="getError('nome_empresa')"
           :disabled="isReadOnly('nome_empresa')"
         />
       </FormField>
 
-      <FormField label="CNPJ" id="cnpj" :error="getError('cnpj')">
+      <FormField :label="labelDocumento" id="cnpj" :error="getError('cnpj')">
         <Input
           id="cnpj"
           v-model="form.cnpj"
-          placeholder="00.000.000/0000-00"
+          :placeholder="placeholderDocumento"
           :error="getError('cnpj')"
           :disabled="isReadOnly('cnpj')"
         />
@@ -119,12 +129,12 @@ function getError(field: string): string | undefined {
         v-model="form.descricao"
         rows="3"
         class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors border-gray-300 disabled:bg-gray-100 disabled:cursor-not-allowed"
-        placeholder="Descrição da empresa"
+        :placeholder="placeholderDescricao"
         :disabled="isReadOnly('descricao')"
       />
     </FormField>
 
-    <FormField label="Logo da Empresa" id="logo" :error="getError('logo')">
+    <FormField :label="labelLogo" id="logo" :error="getError('logo')">
       <ImageUpload
         v-model="form.logo"
         label=""

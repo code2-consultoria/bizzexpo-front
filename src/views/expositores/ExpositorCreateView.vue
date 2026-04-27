@@ -49,8 +49,14 @@ const camposReadOnly = computed(() => {
   if (estado.value === 'encontrado_receita') {
     return ['nome_empresa', 'cnpj']
   }
+  if (estado.value === 'nao_encontrado_cpf' && tipoDocumento.value === 'cpf') {
+    return ['cnpj']
+  }
   return []
 })
+
+// Tipo de pessoa baseado no tipo de documento
+const tipoPessoa = computed(() => tipoDocumento.value === 'cpf' ? 'pf' : 'pj')
 
 // Preencher formulário com dados da Receita
 watch(dadosReceita, (dados) => {
@@ -59,6 +65,13 @@ watch(dadosReceita, (dados) => {
     form.cnpj = dados.cnpj
     form.telefone = dados.telefone || ''
     form.email_contato = dados.email || ''
+  }
+})
+
+// Preencher CPF no form quando CPF não encontrado
+watch(estado, (novoEstado) => {
+  if (novoEstado === 'nao_encontrado_cpf' && tipoDocumento.value === 'cpf') {
+    form.cnpj = documento.value
   }
 })
 
@@ -96,7 +109,7 @@ const subtitulo = computed(() => {
     case 'encontrado_receita':
       return 'Complete os dados de contato para finalizar'
     case 'nao_encontrado_cpf':
-      return 'Preencha os dados do novo expositor'
+      return 'CPF não encontrado na base. Preencha os dados para cadastrar.'
     case 'erro_receita':
       return 'Não foi possível consultar a Receita. Preencha os dados manualmente.'
     default:
@@ -139,6 +152,8 @@ function handleCancel() {
 
 function handleVoltar() {
   if (estado.value === 'busca') {
+    limpar()
+  } else if (estado.value === 'nao_encontrado_cpf') {
     limpar()
   } else {
     voltarParaBusca()
@@ -249,6 +264,7 @@ function handleVoltar() {
             :loading="loading"
             :errors="errors"
             :modo="'confirmar'"
+            :tipo-pessoa="tipoPessoa"
             :campos-read-only="camposReadOnly"
             submit-label="Adicionar expositor"
             @submit="handleSubmit"
@@ -278,6 +294,8 @@ function handleVoltar() {
           :loading="loading"
           :errors="errors"
           :modo="'criar'"
+          :tipo-pessoa="tipoPessoa"
+          :campos-read-only="camposReadOnly"
           submit-label="Adicionar expositor"
           @submit="handleSubmit"
           @cancel="handleCancel"
