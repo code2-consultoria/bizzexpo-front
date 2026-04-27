@@ -77,7 +77,8 @@ async function uploadFile(file: File) {
       },
     })
 
-    emit('update:modelValue', response.data.path)
+    // Usa a URL completa retornada pelo backend (funciona com S3/local)
+    emit('update:modelValue', response.data.url)
   } catch (err: any) {
     error.value = err.response?.data?.message || 'Erro ao fazer upload'
   } finally {
