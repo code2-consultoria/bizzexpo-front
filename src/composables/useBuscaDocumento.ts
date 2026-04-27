@@ -3,14 +3,17 @@ import api from '@/services/api'
 import type { Pessoa, DadosReceita, TipoDocumento } from '@/types'
 
 export type EstadoFormExpositor =
-  | 'inicial'           // Seleção CPF/CNPJ
-  | 'busca'             // Campo de busca ativo
-  | 'buscando'          // Loading busca local
-  | 'encontrado_local'  // Form read-only - pessoa já existe
-  | 'nao_encontrado_cpf'// Form editável para CPF
-  | 'buscando_receita'  // Loading API externa (Brasil API)
-  | 'encontrado_receita'// Form híbrido - dados RF + campos editáveis
-  | 'erro_receita'      // Erro na API externa
+  | 'inicial'              // Seleção CPF/CNPJ
+  | 'busca'                // Campo de busca ativo
+  | 'buscando'             // Loading busca local
+  | 'encontrado_local'     // Form read-only - pessoa já existe
+  | 'feedback_nao_encontrado' // Mensagem de feedback antes do form
+  | 'nao_encontrado_cpf'   // Form editável para CPF
+  | 'buscando_receita'     // Loading API externa (Brasil API)
+  | 'encontrado_receita'   // Form híbrido - dados RF + campos editáveis
+  | 'erro_receita'         // Erro na API externa
+
+const TEMPO_FEEDBACK_MS = 5000
 
 export function useBuscaDocumento() {
   const tipoDocumento = ref<TipoDocumento | null>(null)
@@ -20,6 +23,7 @@ export function useBuscaDocumento() {
   const dadosReceita = ref<DadosReceita | null>(null)
   const erro = ref<string | null>(null)
   const estado = ref<EstadoFormExpositor>('inicial')
+  const feedbackTimer = ref<ReturnType<typeof setTimeout> | null>(null)
 
   const documentoLimpo = computed(() => documento.value.replace(/\D/g, ''))
 
@@ -152,6 +156,27 @@ export function useBuscaDocumento() {
     }
   }
 
+  function mostrarFeedbackEDepoisForm() {
+    estado.value = 'feedback_nao_encontrado'
+
+    if (feedbackTimer.value) {
+      clearTimeout(feedbackTimer.value)
+    }
+
+    feedbackTimer.value = setTimeout(() => {
+      estado.value = 'nao_encontrado_cpf'
+      feedbackTimer.value = null
+    }, TEMPO_FEEDBACK_MS)
+  }
+
+  function pularFeedback() {
+    if (feedbackTimer.value) {
+      clearTimeout(feedbackTimer.value)
+      feedbackTimer.value = null
+    }
+    estado.value = 'nao_encontrado_cpf'
+  }
+
   async function buscar() {
     // Primeiro, busca na base local
     const encontradoLocal = await buscarLocal()
@@ -160,9 +185,9 @@ export function useBuscaDocumento() {
       return
     }
 
-    // Se não encontrou e é CPF, vai para form editável
+    // Se não encontrou e é CPF, mostra feedback e depois vai para form editável
     if (tipoDocumento.value === 'cpf') {
-      estado.value = 'nao_encontrado_cpf'
+      mostrarFeedbackEDepoisForm()
       return
     }
 
@@ -173,6 +198,10 @@ export function useBuscaDocumento() {
   }
 
   function limpar() {
+    if (feedbackTimer.value) {
+      clearTimeout(feedbackTimer.value)
+      feedbackTimer.value = null
+    }
     tipoDocumento.value = null
     documento.value = ''
     pessoa.value = null
@@ -203,6 +232,7 @@ export function useBuscaDocumento() {
     buscarReceita,
     buscar,
     limpar,
-    voltarParaBusca
+    voltarParaBusca,
+    pularFeedback
   }
 }

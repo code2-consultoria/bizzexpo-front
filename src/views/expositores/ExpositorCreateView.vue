@@ -30,7 +30,8 @@ const {
   selecionarTipo,
   buscar,
   limpar,
-  voltarParaBusca
+  voltarParaBusca,
+  pularFeedback
 } = useBuscaDocumento()
 
 // Formulário
@@ -89,6 +90,8 @@ const titulo = computed(() => {
       return 'Consultando Receita Federal...'
     case 'encontrado_receita':
       return 'Empresa encontrada'
+    case 'feedback_nao_encontrado':
+      return 'CPF não encontrado'
     case 'nao_encontrado_cpf':
     case 'erro_receita':
       return 'Cadastrar expositor'
@@ -108,8 +111,10 @@ const subtitulo = computed(() => {
       return 'Este expositor já está na nossa base'
     case 'encontrado_receita':
       return 'Complete os dados de contato para finalizar'
-    case 'nao_encontrado_cpf':
+    case 'feedback_nao_encontrado':
       return 'CPF não encontrado na base. Preencha os dados para cadastrar.'
+    case 'nao_encontrado_cpf':
+      return 'Preencha os dados do novo expositor'
     case 'erro_receita':
       return 'Não foi possível consultar a Receita. Preencha os dados manualmente.'
     default:
@@ -152,6 +157,8 @@ function handleCancel() {
 
 function handleVoltar() {
   if (estado.value === 'busca') {
+    limpar()
+  } else if (estado.value === 'feedback_nao_encontrado') {
     limpar()
   } else if (estado.value === 'nao_encontrado_cpf') {
     limpar()
@@ -272,6 +279,24 @@ function handleVoltar() {
           />
         </Card>
       </div>
+
+      <!-- Estado: Feedback CPF não encontrado -->
+      <Card v-else-if="estado === 'feedback_nao_encontrado'">
+        <div class="flex flex-col items-center justify-center py-12">
+          <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
+            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">CPF não encontrado na base</h3>
+          <p class="text-gray-500 text-center mb-6">
+            Você será redirecionado para o formulário de cadastro em instantes...
+          </p>
+          <Button variant="secondary" @click="pularFeedback">
+            Ir para o cadastro agora
+          </Button>
+        </div>
+      </Card>
 
       <!-- Estado: Não encontrado CPF ou Erro Receita - Form editável -->
       <Card v-else-if="estado === 'nao_encontrado_cpf' || estado === 'erro_receita'">
