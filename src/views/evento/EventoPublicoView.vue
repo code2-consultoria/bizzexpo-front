@@ -31,7 +31,7 @@ onMounted(async () => {
   await Promise.all([
     store.fetchEvento(slug.value),
     store.fetchExpositores(slug.value),
-    store.fetchCategorias(slug.value),
+    store.fetchTiposIngresso(slug.value),
   ])
 })
 </script>
@@ -107,7 +107,7 @@ onMounted(async () => {
             <!-- Secao de tickets mobile -->
             <div class="lg:hidden mb-12">
               <TicketSelector
-                :categorias="store.categorias"
+                :tipos-ingresso="store.tiposIngresso"
                 :evento-slug="store.evento.slug"
               />
             </div>
@@ -127,7 +127,7 @@ onMounted(async () => {
           <div class="hidden lg:block lg:w-80 lg:flex-shrink-0">
             <div class="sticky top-[72px]">
               <TicketSelector
-                :categorias="store.categorias"
+                :tipos-ingresso="store.tiposIngresso"
                 :evento-slug="store.evento.slug"
               />
             </div>

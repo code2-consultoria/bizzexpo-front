@@ -209,6 +209,86 @@ export interface Categoria {
   descricao?: string
 }
 
+// Tipos de Ingresso (Venda de Ingressos)
+export type IngressoStatus = 'aguardando_pagamento' | 'confirmado' | 'cancelado' | 'expirado'
+export type ReservaStatus = 'reservado' | 'efetivado' | 'expirado' | 'cancelado'
+
+export interface TipoIngresso {
+  id: string
+  evento_id: string
+  nome: string
+  descricao?: string
+  preco: number
+  quantidade?: number | null
+  quantidade_disponivel?: number | null
+  quantidade_vendida?: number
+  quantidade_reservada?: number
+  periodo_inicio?: string | null
+  periodo_fim?: string | null
+  cortesia: boolean
+  ativo: boolean
+  esgotado?: boolean
+  temporariamente_indisponivel?: boolean
+}
+
+export interface Reserva {
+  id: string
+  status: ReservaStatus
+  expira_em: string
+  created_at: string
+}
+
+export interface Ingresso {
+  id: string
+  evento_id: string
+  tipo_ingresso_id: string
+  participante_id: string
+  qrcode: string
+  status: IngressoStatus
+  checkin_at?: string
+  cancelado_em?: string
+  created_at: string
+  tipo_ingresso?: TipoIngresso
+  participante?: {
+    id: string
+    nome: string
+    email: string
+  }
+  reserva?: Reserva
+}
+
+export interface CompraIngressoForm {
+  tipo_ingresso_id: string
+  participante_id?: string
+  // Dados do participante (se novo)
+  nome?: string
+  email?: string
+  telefone?: string
+  empresa?: string
+  cargo?: string
+  cidade_uf?: string
+  aceite_termos?: boolean
+}
+
+export interface IngressoCompra {
+  id: string
+  qrcode: string
+  status: IngressoStatus
+  tipo_ingresso: {
+    id: string
+    nome: string
+    preco: number
+  }
+  participante: {
+    id: string
+    nome: string
+    email: string
+  }
+  reserva?: Reserva
+  checkin_at?: string
+  created_at: string
+}
+
 export interface Estande {
   id: string
   expositor_id: string
@@ -339,6 +419,7 @@ export interface EventoPublico {
     nome: string
     descricao?: string
   }>
+  tipos_ingresso?: TipoIngresso[]
   expositores: Array<{
     id: string
     nome_empresa: string
@@ -346,6 +427,7 @@ export interface EventoPublico {
     descricao?: string
   }>
   total_inscricoes: number
+  total_ingressos?: number
 }
 
 // Expositor público com estandes

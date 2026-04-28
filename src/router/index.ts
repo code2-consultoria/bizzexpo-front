@@ -25,6 +25,12 @@ const router = createRouter({
       meta: { public: true },
     },
     {
+      path: '/evento/:slug/compra',
+      name: 'evento-compra',
+      component: () => import('@/views/evento/CompraIngressoView.vue'),
+      meta: { public: true },
+    },
+    {
       path: '/evento/:slug/confirmacao/:qrcode',
       name: 'evento-confirmacao',
       component: () => import('@/views/evento/ConfirmacaoView.vue'),

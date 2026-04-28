@@ -5,20 +5,41 @@ interface Props {
   id: string
   nome: string
   descricao?: string
+  preco: number
   quantidade: number
   maxQuantidade?: number
+  esgotado?: boolean
+  temporariamenteIndisponivel?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   maxQuantidade: 10,
+  esgotado: false,
+  temporariamenteIndisponivel: false,
 })
 
 const emit = defineEmits<{
   (e: 'update:quantidade', value: number): void
 }>()
 
+const isGratuito = computed(() => props.preco === 0)
+const isDisponivel = computed(() => !props.esgotado && !props.temporariamenteIndisponivel)
 const canDecrease = computed(() => props.quantidade > 0)
-const canIncrease = computed(() => props.quantidade < props.maxQuantidade)
+const canIncrease = computed(() => isDisponivel.value && props.quantidade < props.maxQuantidade)
+
+const precoFormatado = computed(() => {
+  if (isGratuito.value) return 'Gratuito'
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL',
+  }).format(props.preco)
+})
+
+const statusLabel = computed(() => {
+  if (props.esgotado) return 'Esgotado'
+  if (props.temporariamenteIndisponivel) return 'Indisponivel'
+  return null
+})
 
 function decrease() {
   if (canDecrease.value) {
@@ -34,10 +55,28 @@ function increase() {
 </script>
 
 <template>
-  <div class="flex items-center justify-between py-4 border-b border-slate-100 last:border-b-0">
+  <div
+    class="flex items-center justify-between py-4 border-b border-slate-100 last:border-b-0"
+    :class="{ 'opacity-60': !isDisponivel }"
+  >
     <div class="flex-1 pr-4">
-      <h4 class="font-medium text-slate-900">{{ nome }}</h4>
+      <div class="flex items-center gap-2">
+        <h4 class="font-medium text-slate-900">{{ nome }}</h4>
+        <span
+          v-if="statusLabel"
+          class="px-2 py-0.5 text-xs font-medium rounded-full"
+          :class="{
+            'bg-red-100 text-red-700': esgotado,
+            'bg-amber-100 text-amber-700': temporariamenteIndisponivel,
+          }"
+        >
+          {{ statusLabel }}
+        </span>
+      </div>
       <p v-if="descricao" class="text-sm text-slate-500 mt-0.5">{{ descricao }}</p>
+      <p class="text-sm font-semibold mt-1" :class="isGratuito ? 'text-green-600' : 'text-primary'">
+        {{ precoFormatado }}
+      </p>
     </div>
 
     <div class="flex items-center gap-3">

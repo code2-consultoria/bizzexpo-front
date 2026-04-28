@@ -8,7 +8,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: process.env.BASE_URL || 'https://bizzexpo.code2.dev',
+    baseURL: process.env.BASE_URL || 'http://localhost:5173',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
@@ -19,4 +19,13 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
   ],
+  // Inicia o servidor de desenvolvimento automaticamente
+  webServer: process.env.BASE_URL
+    ? undefined
+    : {
+        command: 'pnpm dev',
+        url: 'http://localhost:5173',
+        reuseExistingServer: !process.env.CI,
+        timeout: 120000,
+      },
 })
