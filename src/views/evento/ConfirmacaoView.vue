@@ -28,19 +28,6 @@ const titulo = computed(() => {
   return 'Ingresso'
 })
 
-const subtitulo = computed(() => {
-  const ingresso = ingressosStore.ingressoAtual
-  if (!ingresso) return ''
-
-  if (ingresso.status === 'confirmado') {
-    return 'Seu ingresso foi confirmado com sucesso'
-  }
-  if (ingresso.status === 'aguardando_pagamento') {
-    return 'Complete o pagamento para confirmar seu ingresso'
-  }
-  return ''
-})
-
 onMounted(async () => {
   // Carrega evento se ainda nao foi carregado
   if (!eventoStore.evento || eventoStore.evento.slug !== slug) {
