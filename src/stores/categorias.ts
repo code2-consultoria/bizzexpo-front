@@ -3,6 +3,17 @@ import { ref } from 'vue'
 import api from '@/services/api'
 import type { Categoria } from '@/types'
 
+export interface CategoriaFormData {
+  nome: string
+  descricao?: string
+  preco: number
+  quantidade?: number | null
+  periodo_inicio?: string | null
+  periodo_fim?: string | null
+  cortesia: boolean
+  ativo: boolean
+}
+
 export const useCategoriasStore = defineStore('categorias', () => {
   const categorias = ref<Categoria[]>([])
   const categoriaAtual = ref<Categoria | null>(null)
@@ -29,13 +40,7 @@ export const useCategoriasStore = defineStore('categorias', () => {
     }
   }
 
-  async function createCategoria(
-    eventoId: string,
-    data: {
-      nome: string
-      descricao?: string
-    }
-  ) {
+  async function createCategoria(eventoId: string, data: CategoriaFormData) {
     const response = await api.post(`/eventos/${eventoId}/categorias`, data)
     categorias.value.unshift(response.data.data)
     return response.data.data
@@ -44,10 +49,7 @@ export const useCategoriasStore = defineStore('categorias', () => {
   async function updateCategoria(
     eventoId: string,
     categoriaId: string,
-    data: {
-      nome?: string
-      descricao?: string
-    }
+    data: Partial<CategoriaFormData>
   ) {
     const response = await api.put(`/eventos/${eventoId}/categorias/${categoriaId}`, data)
     const index = categorias.value.findIndex((c) => c.id === categoriaId)

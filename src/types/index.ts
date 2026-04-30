@@ -207,6 +207,17 @@ export interface Categoria {
   evento_id: string
   nome: string
   descricao?: string
+  preco: number
+  quantidade?: number | null
+  quantidade_disponivel?: number | null
+  quantidade_vendida?: number
+  quantidade_reservada?: number
+  periodo_inicio?: string | null
+  periodo_fim?: string | null
+  cortesia: boolean
+  ativo: boolean
+  esgotado?: boolean
+  temporariamente_indisponivel?: boolean
 }
 
 // Tipos de Ingresso (Venda de Ingressos)
