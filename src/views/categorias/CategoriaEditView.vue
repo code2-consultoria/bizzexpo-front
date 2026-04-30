@@ -5,7 +5,7 @@ import AppLayout from '@/components/layout/AppLayout.vue'
 import CategoriaForm from '@/components/categorias/CategoriaForm.vue'
 import Button from '@/components/ui/Button.vue'
 import Spinner from '@/components/ui/Spinner.vue'
-import { useCategoriasStore } from '@/stores/categorias'
+import { useCategoriasStore, type CategoriaFormData } from '@/stores/categorias'
 
 const route = useRoute()
 const router = useRouter()
@@ -21,7 +21,7 @@ onMounted(async () => {
   loadingData.value = false
 })
 
-async function handleSubmit(data: { nome?: string; descricao?: string }) {
+async function handleSubmit(data: Partial<CategoriaFormData>) {
   loading.value = true
   try {
     await categoriasStore.updateCategoria(eventoId, categoriaId, data)

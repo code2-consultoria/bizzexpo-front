@@ -4,7 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import AppLayout from '@/components/layout/AppLayout.vue'
 import CategoriaForm from '@/components/categorias/CategoriaForm.vue'
 import Button from '@/components/ui/Button.vue'
-import { useCategoriasStore } from '@/stores/categorias'
+import { useCategoriasStore, type CategoriaFormData } from '@/stores/categorias'
 
 const route = useRoute()
 const router = useRouter()
@@ -13,7 +13,7 @@ const categoriasStore = useCategoriasStore()
 const eventoId = route.params.eventoId as string
 const loading = ref(false)
 
-async function handleSubmit(data: { nome: string; descricao?: string }) {
+async function handleSubmit(data: CategoriaFormData) {
   loading.value = true
   try {
     await categoriasStore.createCategoria(eventoId, data)
