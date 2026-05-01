@@ -24,10 +24,46 @@ const showFaturaDrawer = ref(false)
 const showPagamentoModal = ref(false)
 const pagamentoForm = ref({
   valor: '',
+  desconto: '',
   observacao: '',
 })
 const pagamentoLoading = ref(false)
 const pagamentoError = ref('')
+
+// Valor do plano para pré-preencher o modal
+const valorPlano = computed(() => {
+  const evento = eventosStore.eventoAtual
+  if (!evento) return 0
+
+  // Se tem fatura, usa o total da fatura
+  if (evento.fatura?.total) {
+    return evento.fatura.total
+  }
+
+  // Senão, usa o preço do plano
+  const precos: Record<string, number> = {
+    essencial: 299,
+    profissional: 899,
+    enterprise: 0,
+  }
+  return evento.plano ? precos[evento.plano] || 0 : 0
+})
+
+// Valor líquido (valor - desconto)
+const valorLiquido = computed(() => {
+  const valor = parseFloat(pagamentoForm.value.valor.replace(',', '.')) || 0
+  const desconto = parseFloat(pagamentoForm.value.desconto.replace(',', '.')) || 0
+  return Math.max(0, valor - desconto)
+})
+
+// Abre o modal e pré-preenche o valor
+function abrirModalPagamento() {
+  pagamentoForm.value.valor = valorPlano.value.toFixed(2).replace('.', ',')
+  pagamentoForm.value.desconto = ''
+  pagamentoForm.value.observacao = ''
+  pagamentoError.value = ''
+  showPagamentoModal.value = true
+}
 
 const linkEvento = computed(() => {
   if (!eventosStore.eventoAtual?.slug) return ''
@@ -111,6 +147,17 @@ async function handleMarcarComoPago() {
     return
   }
 
+  const desconto = parseFloat(pagamentoForm.value.desconto.replace(',', '.')) || 0
+  if (desconto < 0) {
+    pagamentoError.value = 'Desconto inválido'
+    return
+  }
+
+  if (desconto > valor) {
+    pagamentoError.value = 'O desconto não pode ser maior que o valor do pagamento'
+    return
+  }
+
   pagamentoLoading.value = true
   pagamentoError.value = ''
 
@@ -118,10 +165,11 @@ async function handleMarcarComoPago() {
     await eventosStore.marcarComoPago(
       route.params.id as string,
       valor,
+      desconto > 0 ? desconto : undefined,
       pagamentoForm.value.observacao || undefined
     )
     showPagamentoModal.value = false
-    pagamentoForm.value = { valor: '', observacao: '' }
+    pagamentoForm.value = { valor: '', desconto: '', observacao: '' }
   } catch (error: any) {
     pagamentoError.value = error.response?.data?.message || 'Erro ao marcar como pago'
   } finally {
@@ -469,7 +517,7 @@ function getStatusBadge(status: string) {
               Este evento está em rascunho. Marque como pago para liberar a publicação.
             </p>
             <button
-              @click="showPagamentoModal = true"
+              @click="abrirModalPagamento"
               class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -564,6 +612,35 @@ function getStatusBadge(status: string) {
               placeholder="0,00"
               class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
             />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Desconto
+          </label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">R$</span>
+            <input
+              v-model="pagamentoForm.desconto"
+              type="text"
+              inputmode="decimal"
+              placeholder="0,00"
+              class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+            />
+          </div>
+          <p class="text-xs text-gray-500 mt-1">
+            O desconto não pode ser maior que o valor do pagamento.
+          </p>
+        </div>
+
+        <!-- Valor líquido -->
+        <div class="p-3 bg-gray-50 rounded-lg border border-gray-200">
+          <div class="flex justify-between items-center">
+            <span class="text-sm font-medium text-gray-600">Valor líquido:</span>
+            <span class="text-lg font-bold text-gray-900">
+              {{ new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(valorLiquido) }}
+            </span>
           </div>
         </div>
 
